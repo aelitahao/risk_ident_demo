@@ -1,0 +1,3024 @@
+{
+  "schema_version": "1.0",
+  "profile_scope": [
+    "用户基本信息",
+    "生活方式",
+    "健康史"
+  ],
+  "notes": [
+    "画像只整理事实数据，不包含疾病风险等级或大模型解释。",
+    "糖尿病和高血压的自报诊断、血压及糖代谢指标不进入评估前画像。",
+    "膳食数据均按单日24小时回顾展示，不代表长期饮食习惯。",
+    "data_status为页面展示与Demo案例编排状态，不是临床数据质量结论。"
+  ],
+  "profiles": [
+    {
+      "user_id": "US-001",
+      "source_reference": {
+        "survey_cycle": "2015-2016",
+        "seqn": 89353
+      },
+      "basic_info": {
+        "display_name": "典型用户 US-001",
+        "age_years": 36,
+        "age_stage": "青年（18-44岁）",
+        "gender": "男性",
+        "education": "部分大学教育或副学士",
+        "marital_status": "已婚",
+        "household_size": 6,
+        "economic_status": {
+          "annual_household_income": "25,000-34,999美元",
+          "family_income_to_poverty_ratio": 0.98
+        },
+        "demographic_background": {
+          "race_ethnicity": "墨西哥裔美国人",
+          "citizenship": "非美国公民"
+        },
+        "body_measurements": {
+          "height_cm": 162,
+          "weight_kg": 61.7,
+          "bmi": 23.5,
+          "waist_cm": 81.4
+        }
+      },
+      "lifestyle": {
+        "smoking": {
+          "summary": "既往累计吸烟至少100支，当前不吸烟",
+          "smoked_100_cigarettes_lifetime": "是",
+          "current_status": "当前不吸",
+          "cigarettes_per_day_past_30d": null,
+          "smoking_days_past_30d": null,
+          "regular_smoking_start_age": 13,
+          "household_smoke_exposure": "未记录"
+        },
+        "alcohol": {
+          "summary": "过去一年饮酒至少12杯",
+          "at_least_12_drinks_past_year": "是",
+          "reported_frequency": null,
+          "average_drinks_per_day_when_reported": 1
+        },
+        "physical_activity": {
+          "summary": "步行或骑车：否；剧烈娱乐活动：是，2天/周，60分钟/天；中等强度娱乐活动：否；久坐：300分钟/天",
+          "walk_or_bicycle_for_transport": "否",
+          "vigorous_recreation": {
+            "reported": "是",
+            "days_per_week": 2,
+            "minutes_per_day": 60
+          },
+          "moderate_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "sedentary_minutes_per_day": 300
+        },
+        "sleep": {
+          "summary": "工作日通常睡眠7.5小时",
+          "weekday_hours": 7.5,
+          "weekend_hours": null
+        },
+        "dietary_record": {
+          "record_type": "单日24小时膳食回顾",
+          "summary": "单日记录：能量998 kcal，钠3033 mg，糖63.93 g，膳食纤维66.8 g",
+          "energy_kcal": 998,
+          "sodium_mg": 3033,
+          "total_sugars_g": 63.93,
+          "dietary_fiber_g": 66.8,
+          "protein_g": 63.01,
+          "total_fat_g": 26.91,
+          "fast_food_or_pizza_meals": 1
+        }
+      },
+      "health_history": {
+        "known_diseases_and_comorbidities": [],
+        "known_disease_summary": "在已采集字段中未报告其他已知慢性病",
+        "family_medical_history": {
+          "close_relative_heart_attack": "否"
+        },
+        "psychological_status": {
+          "summary": "过去两周未报告兴趣减退或情绪低落",
+          "loss_of_interest_past_2_weeks": "完全没有",
+          "depressed_mood_past_2_weeks": "完全没有"
+        },
+        "current_symptoms": [],
+        "recent_health_events": {
+          "data_status": "当前数据未采集",
+          "items": []
+        },
+        "key_general_indicators": {
+          "pulse_rhythm": "规则",
+          "pulse_rate_bpm": 66,
+          "total_cholesterol_mg_dl": 183,
+          "hdl_cholesterol_mg_dl": 68,
+          "ldl_cholesterol_mg_dl": 100,
+          "triglycerides_mg_dl": 76
+        }
+      },
+      "data_status": {
+        "overall_status": "基本完整",
+        "module_status": {
+          "basic_info": "核心字段完整",
+          "lifestyle": "核心字段完整",
+          "health_history": "核心字段完整"
+        },
+        "assessment_availability": {
+          "hypertension": "可评估",
+          "diabetes": "可评估"
+        },
+        "missing_items": [],
+        "quality_notes": [
+          "单日膳食纤维记录值较高，解释时不作为长期饮食习惯的核心依据。"
+        ]
+      }
+    },
+    {
+      "user_id": "US-002",
+      "source_reference": {
+        "survey_cycle": "2007-2008",
+        "seqn": 49186
+      },
+      "basic_info": {
+        "display_name": "典型用户 US-002",
+        "age_years": 27,
+        "age_stage": "青年（18-44岁）",
+        "gender": "女性",
+        "education": "9-11年级（含12年级未毕业）",
+        "marital_status": "与伴侣同居",
+        "household_size": 4,
+        "economic_status": {
+          "annual_household_income": "低于20,000美元",
+          "family_income_to_poverty_ratio": null
+        },
+        "demographic_background": {
+          "race_ethnicity": "墨西哥裔美国人",
+          "citizenship": "非美国公民"
+        },
+        "body_measurements": {
+          "height_cm": 152.9,
+          "weight_kg": 49.4,
+          "bmi": 21.13,
+          "waist_cm": 81.3
+        }
+      },
+      "lifestyle": {
+        "smoking": {
+          "summary": "一生累计吸烟不足100支",
+          "smoked_100_cigarettes_lifetime": "否",
+          "current_status": null,
+          "cigarettes_per_day_past_30d": null,
+          "smoking_days_past_30d": null,
+          "regular_smoking_start_age": null,
+          "household_smoke_exposure": "家中有吸烟者（1）"
+        },
+        "alcohol": {
+          "summary": "过去一年饮酒至少12杯",
+          "at_least_12_drinks_past_year": "是",
+          "reported_frequency": null,
+          "average_drinks_per_day_when_reported": 1
+        },
+        "physical_activity": {
+          "summary": "步行或骑车：否；剧烈娱乐活动：否；中等强度娱乐活动：是，2天/周，120分钟/天；久坐：60分钟/天",
+          "walk_or_bicycle_for_transport": "否",
+          "vigorous_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "moderate_recreation": {
+            "reported": "是",
+            "days_per_week": 2,
+            "minutes_per_day": 120
+          },
+          "sedentary_minutes_per_day": 60
+        },
+        "sleep": {
+          "summary": "工作日通常睡眠8小时",
+          "weekday_hours": 8,
+          "weekend_hours": null
+        },
+        "dietary_record": {
+          "record_type": "单日24小时膳食回顾",
+          "summary": "单日记录：能量1773 kcal，钠2214 mg，糖91.85 g，膳食纤维20.9 g",
+          "energy_kcal": 1773,
+          "sodium_mg": 2214,
+          "total_sugars_g": 91.85,
+          "dietary_fiber_g": 20.9,
+          "protein_g": 53.22,
+          "total_fat_g": 53.86,
+          "fast_food_or_pizza_meals": 1
+        }
+      },
+      "health_history": {
+        "known_diseases_and_comorbidities": [],
+        "known_disease_summary": "在已采集字段中未报告其他已知慢性病",
+        "family_medical_history": {
+          "close_relative_heart_attack": "否"
+        },
+        "psychological_status": {
+          "summary": "过去两周存在情绪相关自述，不能据此作心理疾病诊断",
+          "loss_of_interest_past_2_weeks": "有几天",
+          "depressed_mood_past_2_weeks": "有几天"
+        },
+        "current_symptoms": [],
+        "recent_health_events": {
+          "data_status": "当前数据未采集",
+          "items": []
+        },
+        "key_general_indicators": {
+          "pulse_rhythm": "规则",
+          "pulse_rate_bpm": 72,
+          "total_cholesterol_mg_dl": 221,
+          "hdl_cholesterol_mg_dl": 66,
+          "ldl_cholesterol_mg_dl": 113,
+          "triglycerides_mg_dl": 212
+        }
+      },
+      "data_status": {
+        "overall_status": "基本完整",
+        "module_status": {
+          "basic_info": "核心字段完整",
+          "lifestyle": "核心字段完整",
+          "health_history": "核心字段完整"
+        },
+        "assessment_availability": {
+          "hypertension": "可评估",
+          "diabetes": "可评估"
+        },
+        "missing_items": [
+          "家庭收入贫困比"
+        ],
+        "quality_notes": []
+      }
+    },
+    {
+      "user_id": "US-003",
+      "source_reference": {
+        "survey_cycle": "2015-2016",
+        "seqn": 85110
+      },
+      "basic_info": {
+        "display_name": "典型用户 US-003",
+        "age_years": 41,
+        "age_stage": "青年（18-44岁）",
+        "gender": "男性",
+        "education": "大学毕业及以上",
+        "marital_status": "已婚",
+        "household_size": 5,
+        "economic_status": {
+          "annual_household_income": "100,000美元及以上",
+          "family_income_to_poverty_ratio": ">=5.00"
+        },
+        "demographic_background": {
+          "race_ethnicity": "非西班牙裔白人",
+          "citizenship": "出生或归化取得美国公民身份"
+        },
+        "body_measurements": {
+          "height_cm": 190.2,
+          "weight_kg": 89.3,
+          "bmi": 24.7,
+          "waist_cm": 91.7
+        }
+      },
+      "lifestyle": {
+        "smoking": {
+          "summary": "一生累计吸烟不足100支",
+          "smoked_100_cigarettes_lifetime": "否",
+          "current_status": null,
+          "cigarettes_per_day_past_30d": null,
+          "smoking_days_past_30d": null,
+          "regular_smoking_start_age": null,
+          "household_smoke_exposure": "未记录"
+        },
+        "alcohol": {
+          "summary": "过去一年饮酒至少12杯",
+          "at_least_12_drinks_past_year": "是",
+          "reported_frequency": null,
+          "average_drinks_per_day_when_reported": 2
+        },
+        "physical_activity": {
+          "summary": "步行或骑车：否；剧烈娱乐活动：是，4天/周，60分钟/天；中等强度娱乐活动：是，2天/周，60分钟/天；久坐：120分钟/天",
+          "walk_or_bicycle_for_transport": "否",
+          "vigorous_recreation": {
+            "reported": "是",
+            "days_per_week": 4,
+            "minutes_per_day": 60
+          },
+          "moderate_recreation": {
+            "reported": "是",
+            "days_per_week": 2,
+            "minutes_per_day": 60
+          },
+          "sedentary_minutes_per_day": 120
+        },
+        "sleep": {
+          "summary": "工作日通常睡眠8.5小时",
+          "weekday_hours": 8.5,
+          "weekend_hours": null
+        },
+        "dietary_record": {
+          "record_type": "单日24小时膳食回顾",
+          "summary": "单日记录：能量1201 kcal，钠2040 mg，糖94.95 g，膳食纤维19.1 g",
+          "energy_kcal": 1201,
+          "sodium_mg": 2040,
+          "total_sugars_g": 94.95,
+          "dietary_fiber_g": 19.1,
+          "protein_g": 60.54,
+          "total_fat_g": 38.58,
+          "fast_food_or_pizza_meals": "无"
+        }
+      },
+      "health_history": {
+        "known_diseases_and_comorbidities": [],
+        "known_disease_summary": "在已采集字段中未报告其他已知慢性病",
+        "family_medical_history": {
+          "close_relative_heart_attack": "否"
+        },
+        "psychological_status": {
+          "summary": "过去两周未报告兴趣减退或情绪低落",
+          "loss_of_interest_past_2_weeks": "完全没有",
+          "depressed_mood_past_2_weeks": "完全没有"
+        },
+        "current_symptoms": [],
+        "recent_health_events": {
+          "data_status": "当前数据未采集",
+          "items": []
+        },
+        "key_general_indicators": {
+          "pulse_rhythm": "规则",
+          "pulse_rate_bpm": 60,
+          "total_cholesterol_mg_dl": 166,
+          "hdl_cholesterol_mg_dl": 57,
+          "ldl_cholesterol_mg_dl": null,
+          "triglycerides_mg_dl": null
+        }
+      },
+      "data_status": {
+        "overall_status": "基本完整",
+        "module_status": {
+          "basic_info": "核心字段完整",
+          "lifestyle": "核心字段完整",
+          "health_history": "核心字段完整"
+        },
+        "assessment_availability": {
+          "hypertension": "可评估",
+          "diabetes": "可评估"
+        },
+        "missing_items": [],
+        "quality_notes": []
+      }
+    },
+    {
+      "user_id": "US-004",
+      "source_reference": {
+        "survey_cycle": "2007-2008",
+        "seqn": 48552
+      },
+      "basic_info": {
+        "display_name": "典型用户 US-004",
+        "age_years": 52,
+        "age_stage": "中年（45-59岁）",
+        "gender": "女性",
+        "education": "大学毕业及以上",
+        "marital_status": "已婚",
+        "household_size": 3,
+        "economic_status": {
+          "annual_household_income": "75,000-99,999美元",
+          "family_income_to_poverty_ratio": ">=5.00"
+        },
+        "demographic_background": {
+          "race_ethnicity": "非西班牙裔白人",
+          "citizenship": "出生或归化取得美国公民身份"
+        },
+        "body_measurements": {
+          "height_cm": 175,
+          "weight_kg": 65,
+          "bmi": 21.22,
+          "waist_cm": 83
+        }
+      },
+      "lifestyle": {
+        "smoking": {
+          "summary": "一生累计吸烟不足100支",
+          "smoked_100_cigarettes_lifetime": "否",
+          "current_status": null,
+          "cigarettes_per_day_past_30d": null,
+          "smoking_days_past_30d": null,
+          "regular_smoking_start_age": null,
+          "household_smoke_exposure": "家中无吸烟者"
+        },
+        "alcohol": {
+          "summary": "过去一年饮酒少于12杯；字段口径存在冲突",
+          "at_least_12_drinks_past_year": "否",
+          "reported_frequency": null,
+          "average_drinks_per_day_when_reported": 1
+        },
+        "physical_activity": {
+          "summary": "步行或骑车：否；剧烈娱乐活动：是，6天/周，90分钟/天；中等强度娱乐活动：是，3天/周，45分钟/天；久坐：300分钟/天",
+          "walk_or_bicycle_for_transport": "否",
+          "vigorous_recreation": {
+            "reported": "是",
+            "days_per_week": 6,
+            "minutes_per_day": 90
+          },
+          "moderate_recreation": {
+            "reported": "是",
+            "days_per_week": 3,
+            "minutes_per_day": 45
+          },
+          "sedentary_minutes_per_day": 300
+        },
+        "sleep": {
+          "summary": "工作日通常睡眠8小时",
+          "weekday_hours": 8,
+          "weekend_hours": null
+        },
+        "dietary_record": {
+          "record_type": "单日24小时膳食回顾",
+          "summary": "单日记录：能量1354 kcal，钠1731 mg，糖93.11 g，膳食纤维28 g",
+          "energy_kcal": 1354,
+          "sodium_mg": 1731,
+          "total_sugars_g": 93.11,
+          "dietary_fiber_g": 28,
+          "protein_g": 58.71,
+          "total_fat_g": 44.17,
+          "fast_food_or_pizza_meals": "无"
+        }
+      },
+      "health_history": {
+        "known_diseases_and_comorbidities": [],
+        "known_disease_summary": "在已采集字段中未报告其他已知慢性病",
+        "family_medical_history": {
+          "close_relative_heart_attack": "否"
+        },
+        "psychological_status": {
+          "summary": "过去两周未报告兴趣减退或情绪低落",
+          "loss_of_interest_past_2_weeks": "完全没有",
+          "depressed_mood_past_2_weeks": "完全没有"
+        },
+        "current_symptoms": [],
+        "recent_health_events": {
+          "data_status": "当前数据未采集",
+          "items": []
+        },
+        "key_general_indicators": {
+          "pulse_rhythm": "规则",
+          "pulse_rate_bpm": 54,
+          "total_cholesterol_mg_dl": 229,
+          "hdl_cholesterol_mg_dl": 80,
+          "ldl_cholesterol_mg_dl": 133,
+          "triglycerides_mg_dl": 78
+        }
+      },
+      "data_status": {
+        "overall_status": "基本完整",
+        "module_status": {
+          "basic_info": "核心字段完整",
+          "lifestyle": "核心字段完整",
+          "health_history": "核心字段完整"
+        },
+        "assessment_availability": {
+          "hypertension": "可评估",
+          "diabetes": "可评估"
+        },
+        "missing_items": [],
+        "quality_notes": [
+          "饮酒字段存在调查口径冲突，饮酒量不用于核心解释。"
+        ]
+      }
+    },
+    {
+      "user_id": "US-005",
+      "source_reference": {
+        "survey_cycle": "2011-2012",
+        "seqn": 70745
+      },
+      "basic_info": {
+        "display_name": "典型用户 US-005",
+        "age_years": 51,
+        "age_stage": "中年（45-59岁）",
+        "gender": "男性",
+        "education": "9-11年级（含12年级未毕业）",
+        "marital_status": "已婚",
+        "household_size": 3,
+        "economic_status": {
+          "annual_household_income": "15,000-19,999美元",
+          "family_income_to_poverty_ratio": 0.91
+        },
+        "demographic_background": {
+          "race_ethnicity": "非西班牙裔黑人",
+          "citizenship": "出生或归化取得美国公民身份"
+        },
+        "body_measurements": {
+          "height_cm": 181.4,
+          "weight_kg": 59,
+          "bmi": 17.9,
+          "waist_cm": 79.5
+        }
+      },
+      "lifestyle": {
+        "smoking": {
+          "summary": "当前每日吸烟",
+          "smoked_100_cigarettes_lifetime": "是",
+          "current_status": "每天",
+          "cigarettes_per_day_past_30d": 7,
+          "smoking_days_past_30d": 30,
+          "regular_smoking_start_age": 19,
+          "household_smoke_exposure": "家中无吸烟者"
+        },
+        "alcohol": {
+          "summary": "过去一年饮酒至少12杯",
+          "at_least_12_drinks_past_year": "是",
+          "reported_frequency": null,
+          "average_drinks_per_day_when_reported": 4
+        },
+        "physical_activity": {
+          "summary": "步行或骑车：否；剧烈娱乐活动：否；中等强度娱乐活动：否；久坐：540分钟/天",
+          "walk_or_bicycle_for_transport": "否",
+          "vigorous_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "moderate_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "sedentary_minutes_per_day": 540
+        },
+        "sleep": {
+          "summary": "工作日通常睡眠6小时",
+          "weekday_hours": 6,
+          "weekend_hours": null
+        },
+        "dietary_record": {
+          "record_type": "单日24小时膳食回顾",
+          "summary": "单日记录：能量2173 kcal，钠2741 mg，糖113.59 g，膳食纤维8.8 g",
+          "energy_kcal": 2173,
+          "sodium_mg": 2741,
+          "total_sugars_g": 113.59,
+          "dietary_fiber_g": 8.8,
+          "protein_g": 60.37,
+          "total_fat_g": 53.71,
+          "fast_food_or_pizza_meals": 2
+        }
+      },
+      "health_history": {
+        "known_diseases_and_comorbidities": [],
+        "known_disease_summary": "在已采集字段中未报告其他已知慢性病",
+        "family_medical_history": {
+          "close_relative_heart_attack": "否"
+        },
+        "psychological_status": {
+          "summary": "过去两周存在情绪相关自述，不能据此作心理疾病诊断",
+          "loss_of_interest_past_2_weeks": "超过一半天数",
+          "depressed_mood_past_2_weeks": "几乎每天"
+        },
+        "current_symptoms": [],
+        "recent_health_events": {
+          "data_status": "当前数据未采集",
+          "items": []
+        },
+        "key_general_indicators": {
+          "pulse_rhythm": "规则",
+          "pulse_rate_bpm": 84,
+          "total_cholesterol_mg_dl": null,
+          "hdl_cholesterol_mg_dl": null,
+          "ldl_cholesterol_mg_dl": null,
+          "triglycerides_mg_dl": null
+        }
+      },
+      "data_status": {
+        "overall_status": "基本完整",
+        "module_status": {
+          "basic_info": "核心字段完整",
+          "lifestyle": "核心字段完整",
+          "health_history": "部分缺失"
+        },
+        "assessment_availability": {
+          "hypertension": "可评估",
+          "diabetes": "可评估"
+        },
+        "missing_items": [
+          "总胆固醇"
+        ],
+        "quality_notes": [
+          "BMI处于24名样例中的低端，展示时不应将肥胖作为其主要特征。"
+        ]
+      }
+    },
+    {
+      "user_id": "US-006",
+      "source_reference": {
+        "survey_cycle": "2009-2010",
+        "seqn": 58274
+      },
+      "basic_info": {
+        "display_name": "典型用户 US-006",
+        "age_years": 47,
+        "age_stage": "中年（45-59岁）",
+        "gender": "女性",
+        "education": "大学毕业及以上",
+        "marital_status": "已婚",
+        "household_size": 5,
+        "economic_status": {
+          "annual_household_income": "100,000美元及以上",
+          "family_income_to_poverty_ratio": 4.27
+        },
+        "demographic_background": {
+          "race_ethnicity": "非西班牙裔白人",
+          "citizenship": "出生或归化取得美国公民身份"
+        },
+        "body_measurements": {
+          "height_cm": 162.3,
+          "weight_kg": 83,
+          "bmi": 31.51,
+          "waist_cm": 95.3
+        }
+      },
+      "lifestyle": {
+        "smoking": {
+          "summary": "一生累计吸烟不足100支",
+          "smoked_100_cigarettes_lifetime": "否",
+          "current_status": null,
+          "cigarettes_per_day_past_30d": null,
+          "smoking_days_past_30d": null,
+          "regular_smoking_start_age": null,
+          "household_smoke_exposure": "家中无吸烟者"
+        },
+        "alcohol": {
+          "summary": "过去一年饮酒至少12杯",
+          "at_least_12_drinks_past_year": "是",
+          "reported_frequency": null,
+          "average_drinks_per_day_when_reported": 1
+        },
+        "physical_activity": {
+          "summary": "步行或骑车：否；剧烈娱乐活动：否；中等强度娱乐活动：否；久坐：480分钟/天",
+          "walk_or_bicycle_for_transport": "否",
+          "vigorous_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "moderate_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "sedentary_minutes_per_day": 480
+        },
+        "sleep": {
+          "summary": "工作日通常睡眠7小时",
+          "weekday_hours": 7,
+          "weekend_hours": null
+        },
+        "dietary_record": {
+          "record_type": "单日24小时膳食回顾",
+          "summary": "单日记录：能量2007 kcal，钠4152 mg，糖53.8 g，膳食纤维14 g",
+          "energy_kcal": 2007,
+          "sodium_mg": 4152,
+          "total_sugars_g": 53.8,
+          "dietary_fiber_g": 14,
+          "protein_g": 95.88,
+          "total_fat_g": 122.11,
+          "fast_food_or_pizza_meals": "无"
+        }
+      },
+      "health_history": {
+        "known_diseases_and_comorbidities": [
+          {
+            "disease": "甲状腺疾病",
+            "status": "当前仍存在",
+            "diagnosis_age": 35
+          },
+          {
+            "disease": "癌症或恶性肿瘤史",
+            "status": "既往确诊"
+          }
+        ],
+        "known_disease_summary": "甲状腺疾病；癌症或恶性肿瘤史",
+        "family_medical_history": {
+          "close_relative_heart_attack": "否"
+        },
+        "psychological_status": {
+          "summary": "过去两周未报告兴趣减退或情绪低落",
+          "loss_of_interest_past_2_weeks": "完全没有",
+          "depressed_mood_past_2_weeks": "完全没有"
+        },
+        "current_symptoms": [],
+        "recent_health_events": {
+          "data_status": "当前数据未采集",
+          "items": []
+        },
+        "key_general_indicators": {
+          "pulse_rhythm": "规则",
+          "pulse_rate_bpm": 76,
+          "total_cholesterol_mg_dl": 189,
+          "hdl_cholesterol_mg_dl": 59,
+          "ldl_cholesterol_mg_dl": 116,
+          "triglycerides_mg_dl": 68
+        }
+      },
+      "data_status": {
+        "overall_status": "基本完整",
+        "module_status": {
+          "basic_info": "核心字段完整",
+          "lifestyle": "核心字段完整",
+          "health_history": "核心字段完整"
+        },
+        "assessment_availability": {
+          "hypertension": "可评估",
+          "diabetes": "可评估"
+        },
+        "missing_items": [],
+        "quality_notes": []
+      }
+    },
+    {
+      "user_id": "US-007",
+      "source_reference": {
+        "survey_cycle": "2009-2010",
+        "seqn": 53460
+      },
+      "basic_info": {
+        "display_name": "典型用户 US-007",
+        "age_years": 68,
+        "age_stage": "老年（60-74岁）",
+        "gender": "男性",
+        "education": "9-11年级（含12年级未毕业）",
+        "marital_status": "离异",
+        "household_size": 1,
+        "economic_status": {
+          "annual_household_income": "25,000-34,999美元",
+          "family_income_to_poverty_ratio": 2.43
+        },
+        "demographic_background": {
+          "race_ethnicity": "其他西班牙裔",
+          "citizenship": "出生或归化取得美国公民身份"
+        },
+        "body_measurements": {
+          "height_cm": 166.6,
+          "weight_kg": 86,
+          "bmi": 30.98,
+          "waist_cm": 110.2
+        }
+      },
+      "lifestyle": {
+        "smoking": {
+          "summary": "当前每日吸烟",
+          "smoked_100_cigarettes_lifetime": "是",
+          "current_status": "每天",
+          "cigarettes_per_day_past_30d": 7,
+          "smoking_days_past_30d": 30,
+          "regular_smoking_start_age": 63,
+          "household_smoke_exposure": "家中有吸烟者（1）"
+        },
+        "alcohol": {
+          "summary": "过去一年饮酒至少12杯",
+          "at_least_12_drinks_past_year": "是",
+          "reported_frequency": null,
+          "average_drinks_per_day_when_reported": null
+        },
+        "physical_activity": {
+          "summary": "步行或骑车：否；剧烈娱乐活动：否；中等强度娱乐活动：否；久坐：240分钟/天",
+          "walk_or_bicycle_for_transport": "否",
+          "vigorous_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "moderate_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "sedentary_minutes_per_day": 240
+        },
+        "sleep": {
+          "summary": "工作日通常睡眠7小时",
+          "weekday_hours": 7,
+          "weekend_hours": null
+        },
+        "dietary_record": {
+          "record_type": "单日24小时膳食回顾",
+          "summary": "单日记录：能量1480 kcal，钠1441 mg，糖116.5 g，膳食纤维9.3 g",
+          "energy_kcal": 1480,
+          "sodium_mg": 1441,
+          "total_sugars_g": 116.5,
+          "dietary_fiber_g": 9.3,
+          "protein_g": 64.15,
+          "total_fat_g": 66.06,
+          "fast_food_or_pizza_meals": null
+        }
+      },
+      "health_history": {
+        "known_diseases_and_comorbidities": [],
+        "known_disease_summary": "在已采集字段中未报告其他已知慢性病",
+        "family_medical_history": {
+          "close_relative_heart_attack": "否"
+        },
+        "psychological_status": {
+          "summary": "过去两周存在情绪相关自述，不能据此作心理疾病诊断",
+          "loss_of_interest_past_2_weeks": "有几天",
+          "depressed_mood_past_2_weeks": "有几天"
+        },
+        "current_symptoms": [],
+        "recent_health_events": {
+          "data_status": "当前数据未采集",
+          "items": []
+        },
+        "key_general_indicators": {
+          "pulse_rhythm": "规则",
+          "pulse_rate_bpm": 72,
+          "total_cholesterol_mg_dl": 148,
+          "hdl_cholesterol_mg_dl": 48,
+          "ldl_cholesterol_mg_dl": null,
+          "triglycerides_mg_dl": null
+        }
+      },
+      "data_status": {
+        "overall_status": "基本完整",
+        "module_status": {
+          "basic_info": "核心字段完整",
+          "lifestyle": "核心字段完整",
+          "health_history": "核心字段完整"
+        },
+        "assessment_availability": {
+          "hypertension": "可评估",
+          "diabetes": "可评估"
+        },
+        "missing_items": [],
+        "quality_notes": []
+      }
+    },
+    {
+      "user_id": "US-008",
+      "source_reference": {
+        "survey_cycle": "2017-March 2020 Pre-pandemic",
+        "seqn": 113691
+      },
+      "basic_info": {
+        "display_name": "典型用户 US-008",
+        "age_years": 63,
+        "age_stage": "老年（60-74岁）",
+        "gender": "女性",
+        "education": "高中毕业或同等学历",
+        "marital_status": "丧偶、离异或分居",
+        "household_size": null,
+        "economic_status": {
+          "annual_household_income": null,
+          "family_income_to_poverty_ratio": 0.62
+        },
+        "demographic_background": {
+          "race_ethnicity": "非西班牙裔白人",
+          "citizenship": null
+        },
+        "body_measurements": {
+          "height_cm": 164.1,
+          "weight_kg": 68.3,
+          "bmi": 25.4,
+          "waist_cm": 92.8
+        }
+      },
+      "lifestyle": {
+        "smoking": {
+          "summary": "当前每日吸烟",
+          "smoked_100_cigarettes_lifetime": "是",
+          "current_status": "每天",
+          "cigarettes_per_day_past_30d": 7,
+          "smoking_days_past_30d": 30,
+          "regular_smoking_start_age": 14,
+          "household_smoke_exposure": "未记录"
+        },
+        "alcohol": {
+          "summary": "过去一年有饮酒记录（每周3-4次）",
+          "at_least_12_drinks_past_year": null,
+          "reported_frequency": "每周3-4次",
+          "average_drinks_per_day_when_reported": 2
+        },
+        "physical_activity": {
+          "summary": "步行或骑车：否；剧烈娱乐活动：否；中等强度娱乐活动：否；久坐：300分钟/天",
+          "walk_or_bicycle_for_transport": "否",
+          "vigorous_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "moderate_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "sedentary_minutes_per_day": 300
+        },
+        "sleep": {
+          "summary": "工作日通常睡眠9.5小时，周末9.5小时",
+          "weekday_hours": 9.5,
+          "weekend_hours": 9.5
+        },
+        "dietary_record": {
+          "record_type": "单日24小时膳食回顾",
+          "summary": "单日记录：能量922 kcal，钠2091 mg，糖35.15 g，膳食纤维12.7 g",
+          "energy_kcal": 922,
+          "sodium_mg": 2091,
+          "total_sugars_g": 35.15,
+          "dietary_fiber_g": 12.7,
+          "protein_g": 46.82,
+          "total_fat_g": 23.33,
+          "fast_food_or_pizza_meals": 4
+        }
+      },
+      "health_history": {
+        "known_diseases_and_comorbidities": [
+          {
+            "disease": "甲状腺疾病",
+            "status": "当前仍存在",
+            "diagnosis_age": 53
+          }
+        ],
+        "known_disease_summary": "甲状腺疾病",
+        "family_medical_history": {
+          "close_relative_heart_attack": "否"
+        },
+        "psychological_status": {
+          "summary": "过去两周未报告兴趣减退或情绪低落",
+          "loss_of_interest_past_2_weeks": "完全没有",
+          "depressed_mood_past_2_weeks": "完全没有"
+        },
+        "current_symptoms": [
+          "爬楼或上坡时呼吸短促"
+        ],
+        "recent_health_events": {
+          "data_status": "当前数据未采集",
+          "items": []
+        },
+        "key_general_indicators": {
+          "pulse_rhythm": null,
+          "pulse_rate_bpm": null,
+          "total_cholesterol_mg_dl": 234,
+          "hdl_cholesterol_mg_dl": 53,
+          "ldl_cholesterol_mg_dl": 149,
+          "triglycerides_mg_dl": 162
+        }
+      },
+      "data_status": {
+        "overall_status": "部分缺失",
+        "module_status": {
+          "basic_info": "核心字段完整",
+          "lifestyle": "核心字段完整",
+          "health_history": "部分缺失"
+        },
+        "assessment_availability": {
+          "hypertension": "可评估",
+          "diabetes": "可评估"
+        },
+        "missing_items": [
+          "家庭人数",
+          "家庭收入",
+          "公民身份",
+          "脉搏"
+        ],
+        "quality_notes": []
+      }
+    },
+    {
+      "user_id": "US-009",
+      "source_reference": {
+        "survey_cycle": "2009-2010",
+        "seqn": 53558
+      },
+      "basic_info": {
+        "display_name": "典型用户 US-009",
+        "age_years": 49,
+        "age_stage": "中年（45-59岁）",
+        "gender": "男性",
+        "education": "部分大学教育或副学士",
+        "marital_status": "离异",
+        "household_size": 2,
+        "economic_status": {
+          "annual_household_income": "20,000-24,999美元",
+          "family_income_to_poverty_ratio": 1.62
+        },
+        "demographic_background": {
+          "race_ethnicity": "非西班牙裔白人",
+          "citizenship": "出生或归化取得美国公民身份"
+        },
+        "body_measurements": {
+          "height_cm": 186.7,
+          "weight_kg": 149.5,
+          "bmi": 42.89,
+          "waist_cm": 143.8
+        }
+      },
+      "lifestyle": {
+        "smoking": {
+          "summary": "一生累计吸烟不足100支",
+          "smoked_100_cigarettes_lifetime": "否",
+          "current_status": null,
+          "cigarettes_per_day_past_30d": null,
+          "smoking_days_past_30d": null,
+          "regular_smoking_start_age": null,
+          "household_smoke_exposure": "家中无吸烟者"
+        },
+        "alcohol": {
+          "summary": "过去一年饮酒至少12杯",
+          "at_least_12_drinks_past_year": "是",
+          "reported_frequency": null,
+          "average_drinks_per_day_when_reported": null
+        },
+        "physical_activity": {
+          "summary": "步行或骑车：否；剧烈娱乐活动：否；中等强度娱乐活动：是，1天/周，30分钟/天；久坐：480分钟/天",
+          "walk_or_bicycle_for_transport": "否",
+          "vigorous_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "moderate_recreation": {
+            "reported": "是",
+            "days_per_week": 1,
+            "minutes_per_day": 30
+          },
+          "sedentary_minutes_per_day": 480
+        },
+        "sleep": {
+          "summary": "工作日通常睡眠6小时",
+          "weekday_hours": 6,
+          "weekend_hours": null
+        },
+        "dietary_record": {
+          "record_type": "单日24小时膳食回顾",
+          "summary": "单日记录：能量3396 kcal，钠8810 mg，糖256.49 g，膳食纤维26.3 g",
+          "energy_kcal": 3396,
+          "sodium_mg": 8810,
+          "total_sugars_g": 256.49,
+          "dietary_fiber_g": 26.3,
+          "protein_g": 138.11,
+          "total_fat_g": 109.16,
+          "fast_food_or_pizza_meals": 14
+        }
+      },
+      "health_history": {
+        "known_diseases_and_comorbidities": [],
+        "known_disease_summary": "在已采集字段中未报告其他已知慢性病",
+        "family_medical_history": {
+          "close_relative_heart_attack": "是"
+        },
+        "psychological_status": {
+          "summary": "过去两周存在情绪相关自述，不能据此作心理疾病诊断",
+          "loss_of_interest_past_2_weeks": "有几天",
+          "depressed_mood_past_2_weeks": "完全没有"
+        },
+        "current_symptoms": [
+          "爬楼或上坡时呼吸短促"
+        ],
+        "recent_health_events": {
+          "data_status": "当前数据未采集",
+          "items": []
+        },
+        "key_general_indicators": {
+          "pulse_rhythm": "规则",
+          "pulse_rate_bpm": 88,
+          "total_cholesterol_mg_dl": 199,
+          "hdl_cholesterol_mg_dl": 38,
+          "ldl_cholesterol_mg_dl": null,
+          "triglycerides_mg_dl": null
+        }
+      },
+      "data_status": {
+        "overall_status": "基本完整",
+        "module_status": {
+          "basic_info": "核心字段完整",
+          "lifestyle": "核心字段完整",
+          "health_history": "核心字段完整"
+        },
+        "assessment_availability": {
+          "hypertension": "可评估",
+          "diabetes": "可评估"
+        },
+        "missing_items": [],
+        "quality_notes": [
+          "单日钠摄入记录值较高，仅可描述为当日记录。"
+        ]
+      }
+    },
+    {
+      "user_id": "US-010",
+      "source_reference": {
+        "survey_cycle": "2015-2016",
+        "seqn": 90571
+      },
+      "basic_info": {
+        "display_name": "典型用户 US-010",
+        "age_years": 58,
+        "age_stage": "中年（45-59岁）",
+        "gender": "女性",
+        "education": "高中毕业或同等学历",
+        "marital_status": "已婚",
+        "household_size": 3,
+        "economic_status": {
+          "annual_household_income": "35,000-44,999美元",
+          "family_income_to_poverty_ratio": 2.08
+        },
+        "demographic_background": {
+          "race_ethnicity": "其他西班牙裔",
+          "citizenship": "出生或归化取得美国公民身份"
+        },
+        "body_measurements": {
+          "height_cm": 153.2,
+          "weight_kg": 81.7,
+          "bmi": 34.8,
+          "waist_cm": 104.5
+        }
+      },
+      "lifestyle": {
+        "smoking": {
+          "summary": "当前每日吸烟",
+          "smoked_100_cigarettes_lifetime": "是",
+          "current_status": "每天",
+          "cigarettes_per_day_past_30d": 20,
+          "smoking_days_past_30d": 30,
+          "regular_smoking_start_age": 14,
+          "household_smoke_exposure": "未记录"
+        },
+        "alcohol": {
+          "summary": "过去一年饮酒至少12杯",
+          "at_least_12_drinks_past_year": "是",
+          "reported_frequency": null,
+          "average_drinks_per_day_when_reported": null
+        },
+        "physical_activity": {
+          "summary": "步行或骑车：否；剧烈娱乐活动：否；中等强度娱乐活动：否；久坐：840分钟/天",
+          "walk_or_bicycle_for_transport": "否",
+          "vigorous_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "moderate_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "sedentary_minutes_per_day": 840
+        },
+        "sleep": {
+          "summary": "工作日通常睡眠5小时",
+          "weekday_hours": 5,
+          "weekend_hours": null
+        },
+        "dietary_record": {
+          "record_type": "单日24小时膳食回顾",
+          "summary": "单日记录：能量1965 kcal，钠3704 mg，糖87.35 g，膳食纤维20.3 g",
+          "energy_kcal": 1965,
+          "sodium_mg": 3704,
+          "total_sugars_g": 87.35,
+          "dietary_fiber_g": 20.3,
+          "protein_g": 75.7,
+          "total_fat_g": 67.11,
+          "fast_food_or_pizza_meals": 1
+        }
+      },
+      "health_history": {
+        "known_diseases_and_comorbidities": [
+          {
+            "disease": "哮喘",
+            "status": "当前仍存在"
+          },
+          {
+            "disease": "心肌梗死",
+            "status": "既往确诊",
+            "diagnosis_age": 48
+          },
+          {
+            "disease": "慢性支气管炎",
+            "status": "既往确诊，当前报告不存在",
+            "diagnosis_age": 55
+          }
+        ],
+        "known_disease_summary": "哮喘；心肌梗死；慢性支气管炎",
+        "family_medical_history": {
+          "close_relative_heart_attack": "是"
+        },
+        "psychological_status": {
+          "summary": "过去两周存在情绪相关自述，不能据此作心理疾病诊断",
+          "loss_of_interest_past_2_weeks": "超过一半天数",
+          "depressed_mood_past_2_weeks": "有几天"
+        },
+        "current_symptoms": [
+          "爬楼或上坡时呼吸短促"
+        ],
+        "recent_health_events": {
+          "data_status": "当前数据未采集",
+          "items": []
+        },
+        "key_general_indicators": {
+          "pulse_rhythm": "规则",
+          "pulse_rate_bpm": 82,
+          "total_cholesterol_mg_dl": 252,
+          "hdl_cholesterol_mg_dl": 40,
+          "ldl_cholesterol_mg_dl": 160,
+          "triglycerides_mg_dl": 258
+        }
+      },
+      "data_status": {
+        "overall_status": "基本完整",
+        "module_status": {
+          "basic_info": "核心字段完整",
+          "lifestyle": "核心字段完整",
+          "health_history": "核心字段完整"
+        },
+        "assessment_availability": {
+          "hypertension": "可评估",
+          "diabetes": "可评估"
+        },
+        "missing_items": [],
+        "quality_notes": []
+      }
+    },
+    {
+      "user_id": "US-011",
+      "source_reference": {
+        "survey_cycle": "2009-2010",
+        "seqn": 57358
+      },
+      "basic_info": {
+        "display_name": "典型用户 US-011",
+        "age_years": 65,
+        "age_stage": "老年（60-74岁）",
+        "gender": "男性",
+        "education": "高中毕业或同等学历",
+        "marital_status": "已婚",
+        "household_size": 2,
+        "economic_status": {
+          "annual_household_income": "25,000-34,999美元",
+          "family_income_to_poverty_ratio": 1.72
+        },
+        "demographic_background": {
+          "race_ethnicity": "非西班牙裔白人",
+          "citizenship": "出生或归化取得美国公民身份"
+        },
+        "body_measurements": {
+          "height_cm": 169,
+          "weight_kg": 69.6,
+          "bmi": 24.37,
+          "waist_cm": 95.7
+        }
+      },
+      "lifestyle": {
+        "smoking": {
+          "summary": "既往累计吸烟至少100支，当前不吸烟",
+          "smoked_100_cigarettes_lifetime": "是",
+          "current_status": "当前不吸",
+          "cigarettes_per_day_past_30d": null,
+          "smoking_days_past_30d": null,
+          "regular_smoking_start_age": 14,
+          "household_smoke_exposure": "家中无吸烟者"
+        },
+        "alcohol": {
+          "summary": "过去一年饮酒至少12杯",
+          "at_least_12_drinks_past_year": "是",
+          "reported_frequency": null,
+          "average_drinks_per_day_when_reported": 1
+        },
+        "physical_activity": {
+          "summary": "步行或骑车：否；剧烈娱乐活动：否；中等强度娱乐活动：否；久坐：600分钟/天",
+          "walk_or_bicycle_for_transport": "否",
+          "vigorous_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "moderate_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "sedentary_minutes_per_day": 600
+        },
+        "sleep": {
+          "summary": "工作日通常睡眠5小时",
+          "weekday_hours": 5,
+          "weekend_hours": null
+        },
+        "dietary_record": {
+          "record_type": "单日24小时膳食回顾",
+          "summary": "单日记录：能量1140 kcal，钠2015 mg，糖39.32 g，膳食纤维18 g",
+          "energy_kcal": 1140,
+          "sodium_mg": 2015,
+          "total_sugars_g": 39.32,
+          "dietary_fiber_g": 18,
+          "protein_g": 23.79,
+          "total_fat_g": 56.29,
+          "fast_food_or_pizza_meals": "无"
+        }
+      },
+      "health_history": {
+        "known_diseases_and_comorbidities": [
+          {
+            "disease": "冠心病",
+            "status": "既往确诊",
+            "diagnosis_age": 50
+          },
+          {
+            "disease": "心肌梗死",
+            "status": "既往确诊",
+            "diagnosis_age": 50
+          }
+        ],
+        "known_disease_summary": "冠心病；心肌梗死",
+        "family_medical_history": {
+          "close_relative_heart_attack": "否"
+        },
+        "psychological_status": {
+          "summary": "过去两周未报告兴趣减退或情绪低落",
+          "loss_of_interest_past_2_weeks": "完全没有",
+          "depressed_mood_past_2_weeks": "完全没有"
+        },
+        "current_symptoms": [
+          "爬楼或上坡时呼吸短促"
+        ],
+        "recent_health_events": {
+          "data_status": "当前数据未采集",
+          "items": []
+        },
+        "key_general_indicators": {
+          "pulse_rhythm": "规则",
+          "pulse_rate_bpm": 74,
+          "total_cholesterol_mg_dl": 142,
+          "hdl_cholesterol_mg_dl": 59,
+          "ldl_cholesterol_mg_dl": 62,
+          "triglycerides_mg_dl": 103
+        }
+      },
+      "data_status": {
+        "overall_status": "基本完整",
+        "module_status": {
+          "basic_info": "核心字段完整",
+          "lifestyle": "核心字段完整",
+          "health_history": "核心字段完整"
+        },
+        "assessment_availability": {
+          "hypertension": "可评估",
+          "diabetes": "可评估"
+        },
+        "missing_items": [],
+        "quality_notes": []
+      }
+    },
+    {
+      "user_id": "US-012",
+      "source_reference": {
+        "survey_cycle": "2017-March 2020 Pre-pandemic",
+        "seqn": 120888
+      },
+      "basic_info": {
+        "display_name": "典型用户 US-012",
+        "age_years": 62,
+        "age_stage": "老年（60-74岁）",
+        "gender": "女性",
+        "education": "部分大学教育或副学士",
+        "marital_status": "已婚或与伴侣同居",
+        "household_size": null,
+        "economic_status": {
+          "annual_household_income": null,
+          "family_income_to_poverty_ratio": 3.09
+        },
+        "demographic_background": {
+          "race_ethnicity": "其他西班牙裔",
+          "citizenship": null
+        },
+        "body_measurements": {
+          "height_cm": 152.1,
+          "weight_kg": 79.9,
+          "bmi": 34.5,
+          "waist_cm": 105.8
+        }
+      },
+      "lifestyle": {
+        "smoking": {
+          "summary": "既往累计吸烟至少100支，当前不吸烟",
+          "smoked_100_cigarettes_lifetime": "是",
+          "current_status": "当前不吸",
+          "cigarettes_per_day_past_30d": null,
+          "smoking_days_past_30d": null,
+          "regular_smoking_start_age": 11,
+          "household_smoke_exposure": "未记录"
+        },
+        "alcohol": {
+          "summary": "过去一年有饮酒记录（过去一年7-11次）",
+          "at_least_12_drinks_past_year": null,
+          "reported_frequency": "过去一年7-11次",
+          "average_drinks_per_day_when_reported": 2
+        },
+        "physical_activity": {
+          "summary": "步行或骑车：否；剧烈娱乐活动：否；中等强度娱乐活动：否；久坐：420分钟/天",
+          "walk_or_bicycle_for_transport": "否",
+          "vigorous_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "moderate_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "sedentary_minutes_per_day": 420
+        },
+        "sleep": {
+          "summary": "工作日通常睡眠6小时，周末6小时",
+          "weekday_hours": 6,
+          "weekend_hours": 6
+        },
+        "dietary_record": {
+          "record_type": "单日24小时膳食回顾",
+          "summary": "单日记录：能量1984 kcal，钠4236 mg，糖54.83 g，膳食纤维16.1 g",
+          "energy_kcal": 1984,
+          "sodium_mg": 4236,
+          "total_sugars_g": 54.83,
+          "dietary_fiber_g": 16.1,
+          "protein_g": 82.43,
+          "total_fat_g": 96.27,
+          "fast_food_or_pizza_meals": 2
+        }
+      },
+      "health_history": {
+        "known_diseases_and_comorbidities": [
+          {
+            "disease": "甲状腺疾病",
+            "status": "既往确诊，当前报告不存在",
+            "diagnosis_age": 46
+          }
+        ],
+        "known_disease_summary": "甲状腺疾病",
+        "family_medical_history": {
+          "close_relative_heart_attack": "否"
+        },
+        "psychological_status": {
+          "summary": "过去两周未报告兴趣减退或情绪低落",
+          "loss_of_interest_past_2_weeks": "完全没有",
+          "depressed_mood_past_2_weeks": "完全没有"
+        },
+        "current_symptoms": [],
+        "recent_health_events": {
+          "data_status": "当前数据未采集",
+          "items": []
+        },
+        "key_general_indicators": {
+          "pulse_rhythm": null,
+          "pulse_rate_bpm": null,
+          "total_cholesterol_mg_dl": 248,
+          "hdl_cholesterol_mg_dl": 44,
+          "ldl_cholesterol_mg_dl": null,
+          "triglycerides_mg_dl": null
+        }
+      },
+      "data_status": {
+        "overall_status": "部分缺失",
+        "module_status": {
+          "basic_info": "核心字段完整",
+          "lifestyle": "核心字段完整",
+          "health_history": "部分缺失"
+        },
+        "assessment_availability": {
+          "hypertension": "可评估",
+          "diabetes": "可评估"
+        },
+        "missing_items": [
+          "家庭人数",
+          "家庭收入",
+          "公民身份",
+          "脉搏"
+        ],
+        "quality_notes": []
+      }
+    },
+    {
+      "user_id": "US-013",
+      "source_reference": {
+        "survey_cycle": "2007-2008",
+        "seqn": 48133
+      },
+      "basic_info": {
+        "display_name": "典型用户 US-013",
+        "age_years": 52,
+        "age_stage": "中年（45-59岁）",
+        "gender": "男性",
+        "education": "高中毕业或同等学历",
+        "marital_status": "已婚",
+        "household_size": 5,
+        "economic_status": {
+          "annual_household_income": "10,000-14,999美元",
+          "family_income_to_poverty_ratio": 0.5
+        },
+        "demographic_background": {
+          "race_ethnicity": "非西班牙裔白人",
+          "citizenship": "出生或归化取得美国公民身份"
+        },
+        "body_measurements": {
+          "height_cm": 170,
+          "weight_kg": 104.8,
+          "bmi": 36.26,
+          "waist_cm": 120
+        }
+      },
+      "lifestyle": {
+        "smoking": {
+          "summary": "一生累计吸烟不足100支",
+          "smoked_100_cigarettes_lifetime": "否",
+          "current_status": null,
+          "cigarettes_per_day_past_30d": null,
+          "smoking_days_past_30d": null,
+          "regular_smoking_start_age": null,
+          "household_smoke_exposure": "家中无吸烟者"
+        },
+        "alcohol": {
+          "summary": "过去一年饮酒至少12杯",
+          "at_least_12_drinks_past_year": "是",
+          "reported_frequency": null,
+          "average_drinks_per_day_when_reported": null
+        },
+        "physical_activity": {
+          "summary": "步行或骑车：否；剧烈娱乐活动：否；中等强度娱乐活动：是，3天/周，30分钟/天；久坐：480分钟/天",
+          "walk_or_bicycle_for_transport": "否",
+          "vigorous_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "moderate_recreation": {
+            "reported": "是",
+            "days_per_week": 3,
+            "minutes_per_day": 30
+          },
+          "sedentary_minutes_per_day": 480
+        },
+        "sleep": {
+          "summary": "工作日通常睡眠6小时",
+          "weekday_hours": 6,
+          "weekend_hours": null
+        },
+        "dietary_record": {
+          "record_type": "单日24小时膳食回顾",
+          "summary": "单日记录：能量998 kcal，钠2670 mg，糖22.98 g，膳食纤维17.1 g",
+          "energy_kcal": 998,
+          "sodium_mg": 2670,
+          "total_sugars_g": 22.98,
+          "dietary_fiber_g": 17.1,
+          "protein_g": 53.47,
+          "total_fat_g": 36.62,
+          "fast_food_or_pizza_meals": null
+        }
+      },
+      "health_history": {
+        "known_diseases_and_comorbidities": [],
+        "known_disease_summary": "在已采集字段中未报告其他已知慢性病",
+        "family_medical_history": {
+          "close_relative_heart_attack": "否"
+        },
+        "psychological_status": {
+          "summary": "过去两周存在情绪相关自述，不能据此作心理疾病诊断",
+          "loss_of_interest_past_2_weeks": "有几天",
+          "depressed_mood_past_2_weeks": "几乎每天"
+        },
+        "current_symptoms": [
+          "爬楼或上坡时呼吸短促",
+          "过去一年有喘鸣或哮鸣"
+        ],
+        "recent_health_events": {
+          "data_status": "当前数据未采集",
+          "items": []
+        },
+        "key_general_indicators": {
+          "pulse_rhythm": "规则",
+          "pulse_rate_bpm": 88,
+          "total_cholesterol_mg_dl": 120,
+          "hdl_cholesterol_mg_dl": 32,
+          "ldl_cholesterol_mg_dl": 69,
+          "triglycerides_mg_dl": 93
+        }
+      },
+      "data_status": {
+        "overall_status": "基本完整",
+        "module_status": {
+          "basic_info": "核心字段完整",
+          "lifestyle": "核心字段完整",
+          "health_history": "核心字段完整"
+        },
+        "assessment_availability": {
+          "hypertension": "可评估",
+          "diabetes": "可评估"
+        },
+        "missing_items": [],
+        "quality_notes": []
+      }
+    },
+    {
+      "user_id": "US-014",
+      "source_reference": {
+        "survey_cycle": "2017-March 2020 Pre-pandemic",
+        "seqn": 118128
+      },
+      "basic_info": {
+        "display_name": "典型用户 US-014",
+        "age_years": 56,
+        "age_stage": "中年（45-59岁）",
+        "gender": "女性",
+        "education": "部分大学教育或副学士",
+        "marital_status": "从未结婚",
+        "household_size": null,
+        "economic_status": {
+          "annual_household_income": null,
+          "family_income_to_poverty_ratio": 3.32
+        },
+        "demographic_background": {
+          "race_ethnicity": "非西班牙裔黑人",
+          "citizenship": null
+        },
+        "body_measurements": {
+          "height_cm": 156.2,
+          "weight_kg": 105.5,
+          "bmi": 43.2,
+          "waist_cm": 128.4
+        }
+      },
+      "lifestyle": {
+        "smoking": {
+          "summary": "一生累计吸烟不足100支",
+          "smoked_100_cigarettes_lifetime": "否",
+          "current_status": null,
+          "cigarettes_per_day_past_30d": null,
+          "smoking_days_past_30d": null,
+          "regular_smoking_start_age": null,
+          "household_smoke_exposure": "未记录"
+        },
+        "alcohol": {
+          "summary": "过去一年有饮酒记录（过去一年3-6次）",
+          "at_least_12_drinks_past_year": null,
+          "reported_frequency": "过去一年3-6次",
+          "average_drinks_per_day_when_reported": 1
+        },
+        "physical_activity": {
+          "summary": "步行或骑车：否；剧烈娱乐活动：否；中等强度娱乐活动：是，2天/周，90分钟/天；久坐：420分钟/天",
+          "walk_or_bicycle_for_transport": "否",
+          "vigorous_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "moderate_recreation": {
+            "reported": "是",
+            "days_per_week": 2,
+            "minutes_per_day": 90
+          },
+          "sedentary_minutes_per_day": 420
+        },
+        "sleep": {
+          "summary": "工作日通常睡眠6小时，周末6小时",
+          "weekday_hours": 6,
+          "weekend_hours": 6
+        },
+        "dietary_record": {
+          "record_type": "单日24小时膳食回顾",
+          "summary": "单日记录：能量1793 kcal，钠3383 mg，糖69.65 g，膳食纤维15.8 g",
+          "energy_kcal": 1793,
+          "sodium_mg": 3383,
+          "total_sugars_g": 69.65,
+          "dietary_fiber_g": 15.8,
+          "protein_g": 83.14,
+          "total_fat_g": 75.8,
+          "fast_food_or_pizza_meals": 3
+        }
+      },
+      "health_history": {
+        "known_diseases_and_comorbidities": [
+          {
+            "disease": "哮喘",
+            "status": "当前仍存在"
+          }
+        ],
+        "known_disease_summary": "哮喘",
+        "family_medical_history": {
+          "close_relative_heart_attack": "否"
+        },
+        "psychological_status": {
+          "summary": "过去两周存在情绪相关自述，不能据此作心理疾病诊断",
+          "loss_of_interest_past_2_weeks": "超过一半天数",
+          "depressed_mood_past_2_weeks": "完全没有"
+        },
+        "current_symptoms": [
+          "爬楼或上坡时呼吸短促"
+        ],
+        "recent_health_events": {
+          "data_status": "当前数据未采集",
+          "items": []
+        },
+        "key_general_indicators": {
+          "pulse_rhythm": null,
+          "pulse_rate_bpm": null,
+          "total_cholesterol_mg_dl": 218,
+          "hdl_cholesterol_mg_dl": 48,
+          "ldl_cholesterol_mg_dl": 132,
+          "triglycerides_mg_dl": 189
+        }
+      },
+      "data_status": {
+        "overall_status": "部分缺失",
+        "module_status": {
+          "basic_info": "核心字段完整",
+          "lifestyle": "核心字段完整",
+          "health_history": "部分缺失"
+        },
+        "assessment_availability": {
+          "hypertension": "可评估",
+          "diabetes": "可评估"
+        },
+        "missing_items": [
+          "家庭人数",
+          "家庭收入",
+          "公民身份",
+          "脉搏"
+        ],
+        "quality_notes": []
+      }
+    },
+    {
+      "user_id": "US-015",
+      "source_reference": {
+        "survey_cycle": "2009-2010",
+        "seqn": 61764
+      },
+      "basic_info": {
+        "display_name": "典型用户 US-015",
+        "age_years": 79,
+        "age_stage": "高龄老年（75岁及以上）",
+        "gender": "男性",
+        "education": "部分大学教育或副学士",
+        "marital_status": "已婚",
+        "household_size": 2,
+        "economic_status": {
+          "annual_household_income": "45,000-54,999美元",
+          "family_income_to_poverty_ratio": 3.65
+        },
+        "demographic_background": {
+          "race_ethnicity": "其他西班牙裔",
+          "citizenship": "出生或归化取得美国公民身份"
+        },
+        "body_measurements": {
+          "height_cm": 175.7,
+          "weight_kg": 83.8,
+          "bmi": 27.15,
+          "waist_cm": 102.8
+        }
+      },
+      "lifestyle": {
+        "smoking": {
+          "summary": "既往累计吸烟至少100支，当前不吸烟",
+          "smoked_100_cigarettes_lifetime": "是",
+          "current_status": "当前不吸",
+          "cigarettes_per_day_past_30d": null,
+          "smoking_days_past_30d": null,
+          "regular_smoking_start_age": 21,
+          "household_smoke_exposure": "家中无吸烟者"
+        },
+        "alcohol": {
+          "summary": "饮酒情况未记录",
+          "at_least_12_drinks_past_year": null,
+          "reported_frequency": null,
+          "average_drinks_per_day_when_reported": null
+        },
+        "physical_activity": {
+          "summary": "步行或骑车：否；剧烈娱乐活动：否；中等强度娱乐活动：是，2天/周，30分钟/天；久坐：660分钟/天",
+          "walk_or_bicycle_for_transport": "否",
+          "vigorous_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "moderate_recreation": {
+            "reported": "是",
+            "days_per_week": 2,
+            "minutes_per_day": 30
+          },
+          "sedentary_minutes_per_day": 660
+        },
+        "sleep": {
+          "summary": "工作日通常睡眠3小时",
+          "weekday_hours": 3,
+          "weekend_hours": null
+        },
+        "dietary_record": {
+          "record_type": "单日24小时膳食回顾",
+          "summary": "单日记录：能量1583 kcal，钠2012 mg，糖100.13 g，膳食纤维8.5 g",
+          "energy_kcal": 1583,
+          "sodium_mg": 2012,
+          "total_sugars_g": 100.13,
+          "dietary_fiber_g": 8.5,
+          "protein_g": 67.23,
+          "total_fat_g": 56.02,
+          "fast_food_or_pizza_meals": "无"
+        }
+      },
+      "health_history": {
+        "known_diseases_and_comorbidities": [
+          {
+            "disease": "肾功能减弱或衰竭",
+            "status": "既往确诊"
+          },
+          {
+            "disease": "脑卒中",
+            "status": "既往确诊",
+            "diagnosis_age": 75
+          }
+        ],
+        "known_disease_summary": "肾功能减弱或衰竭；脑卒中",
+        "family_medical_history": {
+          "close_relative_heart_attack": "否"
+        },
+        "psychological_status": {
+          "summary": "未记录",
+          "loss_of_interest_past_2_weeks": null,
+          "depressed_mood_past_2_weeks": null
+        },
+        "current_symptoms": [
+          "爬楼或上坡时呼吸短促",
+          "连续三个月以上多数日咳嗽",
+          "连续三个月以上多数日咳痰"
+        ],
+        "recent_health_events": {
+          "data_status": "当前数据未采集",
+          "items": []
+        },
+        "key_general_indicators": {
+          "pulse_rhythm": "不规则",
+          "pulse_rate_bpm": 56,
+          "total_cholesterol_mg_dl": 153,
+          "hdl_cholesterol_mg_dl": 67,
+          "ldl_cholesterol_mg_dl": null,
+          "triglycerides_mg_dl": null
+        }
+      },
+      "data_status": {
+        "overall_status": "基本完整",
+        "module_status": {
+          "basic_info": "核心字段完整",
+          "lifestyle": "基本完整",
+          "health_history": "核心字段完整"
+        },
+        "assessment_availability": {
+          "hypertension": "可评估",
+          "diabetes": "可评估"
+        },
+        "missing_items": [
+          "饮酒情况"
+        ],
+        "quality_notes": []
+      }
+    },
+    {
+      "user_id": "US-016",
+      "source_reference": {
+        "survey_cycle": "2017-March 2020 Pre-pandemic",
+        "seqn": 113343
+      },
+      "basic_info": {
+        "display_name": "典型用户 US-016",
+        "age_years": 60,
+        "age_stage": "老年（60-74岁）",
+        "gender": "女性",
+        "education": "低于9年级",
+        "marital_status": "丧偶、离异或分居",
+        "household_size": null,
+        "economic_status": {
+          "annual_household_income": null,
+          "family_income_to_poverty_ratio": null
+        },
+        "demographic_background": {
+          "race_ethnicity": "其他西班牙裔",
+          "citizenship": null
+        },
+        "body_measurements": {
+          "height_cm": 131.1,
+          "weight_kg": 60.3,
+          "bmi": 35.1,
+          "waist_cm": 102.1
+        }
+      },
+      "lifestyle": {
+        "smoking": {
+          "summary": "一生累计吸烟不足100支",
+          "smoked_100_cigarettes_lifetime": "否",
+          "current_status": null,
+          "cigarettes_per_day_past_30d": null,
+          "smoking_days_past_30d": null,
+          "regular_smoking_start_age": null,
+          "household_smoke_exposure": "未记录"
+        },
+        "alcohol": {
+          "summary": "饮酒情况未记录",
+          "at_least_12_drinks_past_year": null,
+          "reported_frequency": null,
+          "average_drinks_per_day_when_reported": null
+        },
+        "physical_activity": {
+          "summary": "步行或骑车：否；剧烈娱乐活动：否；中等强度娱乐活动：否；久坐：120分钟/天",
+          "walk_or_bicycle_for_transport": "否",
+          "vigorous_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "moderate_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "sedentary_minutes_per_day": 120
+        },
+        "sleep": {
+          "summary": "工作日通常睡眠11小时，周末11小时",
+          "weekday_hours": 11,
+          "weekend_hours": 11
+        },
+        "dietary_record": {
+          "record_type": "单日24小时膳食回顾",
+          "summary": "单日记录：能量734 kcal，钠935 mg，糖15.26 g，膳食纤维10.3 g",
+          "energy_kcal": 734,
+          "sodium_mg": 935,
+          "total_sugars_g": 15.26,
+          "dietary_fiber_g": 10.3,
+          "protein_g": 38.9,
+          "total_fat_g": 43.48,
+          "fast_food_or_pizza_meals": null
+        }
+      },
+      "health_history": {
+        "known_diseases_and_comorbidities": [
+          {
+            "disease": "哮喘",
+            "status": "当前仍存在"
+          },
+          {
+            "disease": "心绞痛",
+            "status": "既往确诊",
+            "diagnosis_age": 50
+          }
+        ],
+        "known_disease_summary": "哮喘；心绞痛",
+        "family_medical_history": {
+          "close_relative_heart_attack": "否"
+        },
+        "psychological_status": {
+          "summary": "未记录",
+          "loss_of_interest_past_2_weeks": null,
+          "depressed_mood_past_2_weeks": null
+        },
+        "current_symptoms": [
+          "爬楼或上坡时呼吸短促"
+        ],
+        "recent_health_events": {
+          "data_status": "当前数据未采集",
+          "items": []
+        },
+        "key_general_indicators": {
+          "pulse_rhythm": null,
+          "pulse_rate_bpm": null,
+          "total_cholesterol_mg_dl": 121,
+          "hdl_cholesterol_mg_dl": 41,
+          "ldl_cholesterol_mg_dl": 68,
+          "triglycerides_mg_dl": 60
+        }
+      },
+      "data_status": {
+        "overall_status": "部分缺失",
+        "module_status": {
+          "basic_info": "核心字段完整",
+          "lifestyle": "基本完整",
+          "health_history": "部分缺失"
+        },
+        "assessment_availability": {
+          "hypertension": "可评估",
+          "diabetes": "可评估"
+        },
+        "missing_items": [
+          "家庭人数",
+          "家庭收入",
+          "家庭收入贫困比",
+          "公民身份",
+          "饮酒情况",
+          "脉搏"
+        ],
+        "quality_notes": []
+      }
+    },
+    {
+      "user_id": "US-017",
+      "source_reference": {
+        "survey_cycle": "2011-2012",
+        "seqn": 67915
+      },
+      "basic_info": {
+        "display_name": "典型用户 US-017",
+        "age_years": 24,
+        "age_stage": "青年（18-44岁）",
+        "gender": "男性",
+        "education": "大学毕业及以上",
+        "marital_status": "从未结婚",
+        "household_size": 2,
+        "economic_status": {
+          "annual_household_income": "45,000-54,999美元",
+          "family_income_to_poverty_ratio": 2.2
+        },
+        "demographic_background": {
+          "race_ethnicity": "非西班牙裔亚裔",
+          "citizenship": "非美国公民"
+        },
+        "body_measurements": {
+          "height_cm": 174.8,
+          "weight_kg": 65.7,
+          "bmi": 21.5,
+          "waist_cm": 80.9
+        }
+      },
+      "lifestyle": {
+        "smoking": {
+          "summary": "一生累计吸烟不足100支",
+          "smoked_100_cigarettes_lifetime": "否",
+          "current_status": null,
+          "cigarettes_per_day_past_30d": null,
+          "smoking_days_past_30d": null,
+          "regular_smoking_start_age": null,
+          "household_smoke_exposure": "家中无吸烟者"
+        },
+        "alcohol": {
+          "summary": "过去一年饮酒至少12杯",
+          "at_least_12_drinks_past_year": "是",
+          "reported_frequency": null,
+          "average_drinks_per_day_when_reported": 1
+        },
+        "physical_activity": {
+          "summary": "步行或骑车：否；剧烈娱乐活动：否；中等强度娱乐活动：否；久坐：180分钟/天",
+          "walk_or_bicycle_for_transport": "否",
+          "vigorous_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "moderate_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "sedentary_minutes_per_day": 180
+        },
+        "sleep": {
+          "summary": "工作日通常睡眠9小时",
+          "weekday_hours": 9,
+          "weekend_hours": null
+        },
+        "dietary_record": {
+          "record_type": "单日24小时膳食回顾",
+          "summary": "单日记录：能量1786 kcal，钠4297 mg，糖46.69 g，膳食纤维10.3 g",
+          "energy_kcal": 1786,
+          "sodium_mg": 4297,
+          "total_sugars_g": 46.69,
+          "dietary_fiber_g": 10.3,
+          "protein_g": 117.04,
+          "total_fat_g": 49.53,
+          "fast_food_or_pizza_meals": 2
+        }
+      },
+      "health_history": {
+        "known_diseases_and_comorbidities": [
+          {
+            "disease": "肝脏疾病",
+            "status": "当前仍存在",
+            "diagnosis_age": 3
+          }
+        ],
+        "known_disease_summary": "肝脏疾病",
+        "family_medical_history": {
+          "close_relative_heart_attack": "否"
+        },
+        "psychological_status": {
+          "summary": "过去两周未报告兴趣减退或情绪低落",
+          "loss_of_interest_past_2_weeks": "完全没有",
+          "depressed_mood_past_2_weeks": "完全没有"
+        },
+        "current_symptoms": [],
+        "recent_health_events": {
+          "data_status": "当前数据未采集",
+          "items": []
+        },
+        "key_general_indicators": {
+          "pulse_rhythm": "规则",
+          "pulse_rate_bpm": 70,
+          "total_cholesterol_mg_dl": 205,
+          "hdl_cholesterol_mg_dl": 53,
+          "ldl_cholesterol_mg_dl": 118,
+          "triglycerides_mg_dl": 168
+        }
+      },
+      "data_status": {
+        "overall_status": "基本完整",
+        "module_status": {
+          "basic_info": "核心字段完整",
+          "lifestyle": "核心字段完整",
+          "health_history": "核心字段完整"
+        },
+        "assessment_availability": {
+          "hypertension": "可评估",
+          "diabetes": "可评估"
+        },
+        "missing_items": [],
+        "quality_notes": []
+      }
+    },
+    {
+      "user_id": "US-018",
+      "source_reference": {
+        "survey_cycle": "2007-2008",
+        "seqn": 41682
+      },
+      "basic_info": {
+        "display_name": "典型用户 US-018",
+        "age_years": 44,
+        "age_stage": "青年（18-44岁）",
+        "gender": "女性",
+        "education": "大学毕业及以上",
+        "marital_status": "已婚",
+        "household_size": 4,
+        "economic_status": {
+          "annual_household_income": "高于20,000美元",
+          "family_income_to_poverty_ratio": null
+        },
+        "demographic_background": {
+          "race_ethnicity": "非西班牙裔白人",
+          "citizenship": "出生或归化取得美国公民身份"
+        },
+        "body_measurements": {
+          "height_cm": 167.8,
+          "weight_kg": 82.8,
+          "bmi": 29.41,
+          "waist_cm": 91.3
+        }
+      },
+      "lifestyle": {
+        "smoking": {
+          "summary": "既往累计吸烟至少100支，当前不吸烟",
+          "smoked_100_cigarettes_lifetime": "是",
+          "current_status": "当前不吸",
+          "cigarettes_per_day_past_30d": null,
+          "smoking_days_past_30d": null,
+          "regular_smoking_start_age": 16,
+          "household_smoke_exposure": "家中无吸烟者"
+        },
+        "alcohol": {
+          "summary": "过去一年饮酒至少12杯",
+          "at_least_12_drinks_past_year": "是",
+          "reported_frequency": null,
+          "average_drinks_per_day_when_reported": 2
+        },
+        "physical_activity": {
+          "summary": "步行或骑车：否；剧烈娱乐活动：否；中等强度娱乐活动：是，3天/周，20分钟/天；久坐：360分钟/天",
+          "walk_or_bicycle_for_transport": "否",
+          "vigorous_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "moderate_recreation": {
+            "reported": "是",
+            "days_per_week": 3,
+            "minutes_per_day": 20
+          },
+          "sedentary_minutes_per_day": 360
+        },
+        "sleep": {
+          "summary": "工作日通常睡眠7小时",
+          "weekday_hours": 7,
+          "weekend_hours": null
+        },
+        "dietary_record": {
+          "record_type": "单日24小时膳食回顾",
+          "summary": "单日记录：能量2192 kcal，钠2565 mg，糖150.55 g，膳食纤维23.7 g",
+          "energy_kcal": 2192,
+          "sodium_mg": 2565,
+          "total_sugars_g": 150.55,
+          "dietary_fiber_g": 23.7,
+          "protein_g": 88.05,
+          "total_fat_g": 65.07,
+          "fast_food_or_pizza_meals": 2
+        }
+      },
+      "health_history": {
+        "known_diseases_and_comorbidities": [
+          {
+            "disease": "甲状腺疾病",
+            "status": "当前仍存在",
+            "diagnosis_age": 30
+          }
+        ],
+        "known_disease_summary": "甲状腺疾病",
+        "family_medical_history": {
+          "close_relative_heart_attack": "否"
+        },
+        "psychological_status": {
+          "summary": "过去两周未报告兴趣减退或情绪低落",
+          "loss_of_interest_past_2_weeks": "完全没有",
+          "depressed_mood_past_2_weeks": "完全没有"
+        },
+        "current_symptoms": [],
+        "recent_health_events": {
+          "data_status": "当前数据未采集",
+          "items": []
+        },
+        "key_general_indicators": {
+          "pulse_rhythm": "规则",
+          "pulse_rate_bpm": 68,
+          "total_cholesterol_mg_dl": 202,
+          "hdl_cholesterol_mg_dl": 50,
+          "ldl_cholesterol_mg_dl": 126,
+          "triglycerides_mg_dl": 130
+        }
+      },
+      "data_status": {
+        "overall_status": "基本完整",
+        "module_status": {
+          "basic_info": "核心字段完整",
+          "lifestyle": "核心字段完整",
+          "health_history": "核心字段完整"
+        },
+        "assessment_availability": {
+          "hypertension": "可评估",
+          "diabetes": "可评估"
+        },
+        "missing_items": [
+          "家庭收入贫困比"
+        ],
+        "quality_notes": []
+      }
+    },
+    {
+      "user_id": "US-019",
+      "source_reference": {
+        "survey_cycle": "2007-2008",
+        "seqn": 44027
+      },
+      "basic_info": {
+        "display_name": "典型用户 US-019",
+        "age_years": 76,
+        "age_stage": "高龄老年（75岁及以上）",
+        "gender": "男性",
+        "education": "低于9年级",
+        "marital_status": "已婚",
+        "household_size": 2,
+        "economic_status": {
+          "annual_household_income": "45,000-54,999美元",
+          "family_income_to_poverty_ratio": 3.65
+        },
+        "demographic_background": {
+          "race_ethnicity": "非西班牙裔白人",
+          "citizenship": "出生或归化取得美国公民身份"
+        },
+        "body_measurements": {
+          "height_cm": 164.6,
+          "weight_kg": 71.2,
+          "bmi": 26.28,
+          "waist_cm": 100.3
+        }
+      },
+      "lifestyle": {
+        "smoking": {
+          "summary": "既往累计吸烟至少100支，当前不吸烟",
+          "smoked_100_cigarettes_lifetime": "是",
+          "current_status": "当前不吸",
+          "cigarettes_per_day_past_30d": null,
+          "smoking_days_past_30d": null,
+          "regular_smoking_start_age": 15,
+          "household_smoke_exposure": "家中无吸烟者"
+        },
+        "alcohol": {
+          "summary": "过去一年饮酒至少12杯",
+          "at_least_12_drinks_past_year": "是",
+          "reported_frequency": null,
+          "average_drinks_per_day_when_reported": null
+        },
+        "physical_activity": {
+          "summary": "步行或骑车：否；剧烈娱乐活动：否；中等强度娱乐活动：否；久坐：300分钟/天",
+          "walk_or_bicycle_for_transport": "否",
+          "vigorous_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "moderate_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "sedentary_minutes_per_day": 300
+        },
+        "sleep": {
+          "summary": "工作日通常睡眠9小时",
+          "weekday_hours": 9,
+          "weekend_hours": null
+        },
+        "dietary_record": {
+          "record_type": "单日24小时膳食回顾",
+          "summary": "单日记录：能量1666 kcal，钠2042 mg，糖108.05 g，膳食纤维6.9 g",
+          "energy_kcal": 1666,
+          "sodium_mg": 2042,
+          "total_sugars_g": 108.05,
+          "dietary_fiber_g": 6.9,
+          "protein_g": 60.04,
+          "total_fat_g": 60.69,
+          "fast_food_or_pizza_meals": "无"
+        }
+      },
+      "health_history": {
+        "known_diseases_and_comorbidities": [
+          {
+            "disease": "充血性心力衰竭",
+            "status": "既往确诊",
+            "diagnosis_age": 73
+          }
+        ],
+        "known_disease_summary": "充血性心力衰竭",
+        "family_medical_history": {
+          "close_relative_heart_attack": "否"
+        },
+        "psychological_status": {
+          "summary": "过去两周未报告兴趣减退或情绪低落",
+          "loss_of_interest_past_2_weeks": "完全没有",
+          "depressed_mood_past_2_weeks": "完全没有"
+        },
+        "current_symptoms": [
+          "爬楼或上坡时呼吸短促",
+          "连续三个月以上多数日咳痰"
+        ],
+        "recent_health_events": {
+          "data_status": "当前数据未采集",
+          "items": []
+        },
+        "key_general_indicators": {
+          "pulse_rhythm": "规则",
+          "pulse_rate_bpm": 76,
+          "total_cholesterol_mg_dl": 133,
+          "hdl_cholesterol_mg_dl": 59,
+          "ldl_cholesterol_mg_dl": null,
+          "triglycerides_mg_dl": null
+        }
+      },
+      "data_status": {
+        "overall_status": "基本完整",
+        "module_status": {
+          "basic_info": "核心字段完整",
+          "lifestyle": "核心字段完整",
+          "health_history": "核心字段完整"
+        },
+        "assessment_availability": {
+          "hypertension": "可评估",
+          "diabetes": "可评估"
+        },
+        "missing_items": [],
+        "quality_notes": []
+      }
+    },
+    {
+      "user_id": "US-020",
+      "source_reference": {
+        "survey_cycle": "2009-2010",
+        "seqn": 58280
+      },
+      "basic_info": {
+        "display_name": "典型用户 US-020",
+        "age_years": 77,
+        "age_stage": "高龄老年（75岁及以上）",
+        "gender": "女性",
+        "education": "低于9年级",
+        "marital_status": "丧偶",
+        "household_size": 4,
+        "economic_status": {
+          "annual_household_income": null,
+          "family_income_to_poverty_ratio": null
+        },
+        "demographic_background": {
+          "race_ethnicity": "非西班牙裔黑人",
+          "citizenship": "出生或归化取得美国公民身份"
+        },
+        "body_measurements": {
+          "height_cm": 175.8,
+          "weight_kg": 59.9,
+          "bmi": 19.38,
+          "waist_cm": 86.5
+        }
+      },
+      "lifestyle": {
+        "smoking": {
+          "summary": "当前每日吸烟",
+          "smoked_100_cigarettes_lifetime": "是",
+          "current_status": "每天",
+          "cigarettes_per_day_past_30d": 2,
+          "smoking_days_past_30d": 30,
+          "regular_smoking_start_age": 21,
+          "household_smoke_exposure": "家中有吸烟者（3人及以上）"
+        },
+        "alcohol": {
+          "summary": "饮酒情况未记录",
+          "at_least_12_drinks_past_year": null,
+          "reported_frequency": null,
+          "average_drinks_per_day_when_reported": null
+        },
+        "physical_activity": {
+          "summary": "步行或骑车：是；剧烈娱乐活动：否；中等强度娱乐活动：否；久坐：180分钟/天",
+          "walk_or_bicycle_for_transport": "是",
+          "vigorous_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "moderate_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "sedentary_minutes_per_day": 180
+        },
+        "sleep": {
+          "summary": "工作日通常睡眠7小时",
+          "weekday_hours": 7,
+          "weekend_hours": null
+        },
+        "dietary_record": {
+          "record_type": "单日24小时膳食回顾",
+          "summary": "单日记录：能量445 kcal，钠601 mg，糖52 g，膳食纤维1.7 g",
+          "energy_kcal": 445,
+          "sodium_mg": 601,
+          "total_sugars_g": 52,
+          "dietary_fiber_g": 1.7,
+          "protein_g": 7.01,
+          "total_fat_g": 16.09,
+          "fast_food_or_pizza_meals": 2
+        }
+      },
+      "health_history": {
+        "known_diseases_and_comorbidities": [
+          {
+            "disease": "慢性支气管炎",
+            "status": "既往确诊，当前报告不存在",
+            "diagnosis_age": 75
+          }
+        ],
+        "known_disease_summary": "慢性支气管炎",
+        "family_medical_history": {
+          "close_relative_heart_attack": "否"
+        },
+        "psychological_status": {
+          "summary": "未记录",
+          "loss_of_interest_past_2_weeks": null,
+          "depressed_mood_past_2_weeks": null
+        },
+        "current_symptoms": [
+          "爬楼或上坡时呼吸短促",
+          "过去一年有喘鸣或哮鸣"
+        ],
+        "recent_health_events": {
+          "data_status": "当前数据未采集",
+          "items": []
+        },
+        "key_general_indicators": {
+          "pulse_rhythm": "规则",
+          "pulse_rate_bpm": 64,
+          "total_cholesterol_mg_dl": 179,
+          "hdl_cholesterol_mg_dl": 52,
+          "ldl_cholesterol_mg_dl": 104,
+          "triglycerides_mg_dl": 117
+        }
+      },
+      "data_status": {
+        "overall_status": "基本完整",
+        "module_status": {
+          "basic_info": "核心字段完整",
+          "lifestyle": "基本完整",
+          "health_history": "核心字段完整"
+        },
+        "assessment_availability": {
+          "hypertension": "可评估",
+          "diabetes": "可评估"
+        },
+        "missing_items": [
+          "家庭收入",
+          "家庭收入贫困比",
+          "饮酒情况"
+        ],
+        "quality_notes": [
+          "单日膳食能量及多项营养素记录偏低，膳食模块需谨慎使用。"
+        ]
+      }
+    },
+    {
+      "user_id": "US-021",
+      "source_reference": {
+        "survey_cycle": "2017-March 2020 Pre-pandemic",
+        "seqn": 115697
+      },
+      "basic_info": {
+        "display_name": "典型用户 US-021",
+        "age_years": 48,
+        "age_stage": "中年（45-59岁）",
+        "gender": "男性",
+        "education": "大学毕业及以上",
+        "marital_status": "已婚或与伴侣同居",
+        "household_size": null,
+        "economic_status": {
+          "annual_household_income": null,
+          "family_income_to_poverty_ratio": null
+        },
+        "demographic_background": {
+          "race_ethnicity": "非西班牙裔亚裔",
+          "citizenship": null
+        },
+        "body_measurements": {
+          "height_cm": 170.4,
+          "weight_kg": 83.9,
+          "bmi": 28.9,
+          "waist_cm": 108.6
+        }
+      },
+      "lifestyle": {
+        "smoking": {
+          "summary": "一生累计吸烟不足100支",
+          "smoked_100_cigarettes_lifetime": "否",
+          "current_status": null,
+          "cigarettes_per_day_past_30d": null,
+          "smoking_days_past_30d": null,
+          "regular_smoking_start_age": null,
+          "household_smoke_exposure": "未记录"
+        },
+        "alcohol": {
+          "summary": "过去一年有饮酒记录（过去一年1-2次）",
+          "at_least_12_drinks_past_year": null,
+          "reported_frequency": "过去一年1-2次",
+          "average_drinks_per_day_when_reported": 1
+        },
+        "physical_activity": {
+          "summary": "步行或骑车：否；剧烈娱乐活动：否；中等强度娱乐活动：是，4天/周，15分钟/天；久坐：720分钟/天",
+          "walk_or_bicycle_for_transport": "否",
+          "vigorous_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "moderate_recreation": {
+            "reported": "是",
+            "days_per_week": 4,
+            "minutes_per_day": 15
+          },
+          "sedentary_minutes_per_day": 720
+        },
+        "sleep": {
+          "summary": "工作日通常睡眠6小时，周末11小时",
+          "weekday_hours": 6,
+          "weekend_hours": 11
+        },
+        "dietary_record": {
+          "record_type": "单日24小时膳食回顾",
+          "summary": "单日记录：能量1700 kcal，钠2886 mg，糖125.71 g，膳食纤维50 g",
+          "energy_kcal": 1700,
+          "sodium_mg": 2886,
+          "total_sugars_g": 125.71,
+          "dietary_fiber_g": 50,
+          "protein_g": 43.31,
+          "total_fat_g": 42.99,
+          "fast_food_or_pizza_meals": 3
+        }
+      },
+      "health_history": {
+        "known_diseases_and_comorbidities": [],
+        "known_disease_summary": "在已采集字段中未报告其他已知慢性病",
+        "family_medical_history": {
+          "close_relative_heart_attack": "否"
+        },
+        "psychological_status": {
+          "summary": "过去两周未报告兴趣减退或情绪低落",
+          "loss_of_interest_past_2_weeks": "完全没有",
+          "depressed_mood_past_2_weeks": "完全没有"
+        },
+        "current_symptoms": [],
+        "recent_health_events": {
+          "data_status": "当前数据未采集",
+          "items": []
+        },
+        "key_general_indicators": {
+          "pulse_rhythm": null,
+          "pulse_rate_bpm": null,
+          "total_cholesterol_mg_dl": null,
+          "hdl_cholesterol_mg_dl": null,
+          "ldl_cholesterol_mg_dl": null,
+          "triglycerides_mg_dl": null
+        }
+      },
+      "data_status": {
+        "overall_status": "部分缺失",
+        "module_status": {
+          "basic_info": "核心字段完整",
+          "lifestyle": "核心字段完整",
+          "health_history": "部分缺失"
+        },
+        "assessment_availability": {
+          "hypertension": "可评估",
+          "diabetes": "证据有限"
+        },
+        "missing_items": [
+          "家庭人数",
+          "家庭收入",
+          "家庭收入贫困比",
+          "公民身份",
+          "脉搏",
+          "总胆固醇",
+          "用于结果复核的糖代谢参考指标"
+        ],
+        "quality_notes": [
+          "单日膳食纤维记录值较高，不作为长期饮食习惯的核心依据。"
+        ]
+      }
+    },
+    {
+      "user_id": "US-022",
+      "source_reference": {
+        "survey_cycle": "2013-2014",
+        "seqn": 74674
+      },
+      "basic_info": {
+        "display_name": "典型用户 US-022",
+        "age_years": 67,
+        "age_stage": "老年（60-74岁）",
+        "gender": "女性",
+        "education": "低于9年级",
+        "marital_status": "丧偶",
+        "household_size": 2,
+        "economic_status": {
+          "annual_household_income": "15,000-19,999美元",
+          "family_income_to_poverty_ratio": 0.97
+        },
+        "demographic_background": {
+          "race_ethnicity": "墨西哥裔美国人",
+          "citizenship": "非美国公民"
+        },
+        "body_measurements": {
+          "height_cm": 135.4,
+          "weight_kg": 66.3,
+          "bmi": 36.2,
+          "waist_cm": 102.6
+        }
+      },
+      "lifestyle": {
+        "smoking": {
+          "summary": "一生累计吸烟不足100支",
+          "smoked_100_cigarettes_lifetime": "否",
+          "current_status": null,
+          "cigarettes_per_day_past_30d": null,
+          "smoking_days_past_30d": null,
+          "regular_smoking_start_age": null,
+          "household_smoke_exposure": "未记录"
+        },
+        "alcohol": {
+          "summary": "过去一年饮酒少于12杯",
+          "at_least_12_drinks_past_year": "否",
+          "reported_frequency": null,
+          "average_drinks_per_day_when_reported": null
+        },
+        "physical_activity": {
+          "summary": "步行或骑车：否；剧烈娱乐活动：否；中等强度娱乐活动：否；久坐：360分钟/天",
+          "walk_or_bicycle_for_transport": "否",
+          "vigorous_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "moderate_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "sedentary_minutes_per_day": 360
+        },
+        "sleep": {
+          "summary": "工作日通常睡眠8小时",
+          "weekday_hours": 8,
+          "weekend_hours": null
+        },
+        "dietary_record": {
+          "record_type": "单日24小时膳食回顾",
+          "summary": "单日记录：能量1752 kcal，钠1748 mg，糖94.43 g，膳食纤维13.4 g",
+          "energy_kcal": 1752,
+          "sodium_mg": 1748,
+          "total_sugars_g": 94.43,
+          "dietary_fiber_g": 13.4,
+          "protein_g": 68.99,
+          "total_fat_g": 62.67,
+          "fast_food_or_pizza_meals": "无"
+        }
+      },
+      "health_history": {
+        "known_diseases_and_comorbidities": [
+          {
+            "disease": "癌症或恶性肿瘤史",
+            "status": "既往确诊"
+          }
+        ],
+        "known_disease_summary": "癌症或恶性肿瘤史",
+        "family_medical_history": {
+          "close_relative_heart_attack": "否"
+        },
+        "psychological_status": {
+          "summary": "过去两周未报告兴趣减退或情绪低落",
+          "loss_of_interest_past_2_weeks": "完全没有",
+          "depressed_mood_past_2_weeks": "完全没有"
+        },
+        "current_symptoms": [],
+        "recent_health_events": {
+          "data_status": "当前数据未采集",
+          "items": []
+        },
+        "key_general_indicators": {
+          "pulse_rhythm": "规则",
+          "pulse_rate_bpm": 72,
+          "total_cholesterol_mg_dl": null,
+          "hdl_cholesterol_mg_dl": null,
+          "ldl_cholesterol_mg_dl": null,
+          "triglycerides_mg_dl": null
+        }
+      },
+      "data_status": {
+        "overall_status": "部分缺失",
+        "module_status": {
+          "basic_info": "核心字段完整",
+          "lifestyle": "核心字段完整",
+          "health_history": "部分缺失"
+        },
+        "assessment_availability": {
+          "hypertension": "可评估",
+          "diabetes": "证据有限"
+        },
+        "missing_items": [
+          "总胆固醇",
+          "用于结果复核的糖代谢参考指标"
+        ],
+        "quality_notes": []
+      }
+    },
+    {
+      "user_id": "US-023",
+      "source_reference": {
+        "survey_cycle": "2009-2010",
+        "seqn": 55397
+      },
+      "basic_info": {
+        "display_name": "典型用户 US-023",
+        "age_years": 42,
+        "age_stage": "青年（18-44岁）",
+        "gender": "女性",
+        "education": "部分大学教育或副学士",
+        "marital_status": "从未结婚",
+        "household_size": 3,
+        "economic_status": {
+          "annual_household_income": "55,000-64,999美元",
+          "family_income_to_poverty_ratio": 3.39
+        },
+        "demographic_background": {
+          "race_ethnicity": "非西班牙裔黑人",
+          "citizenship": "出生或归化取得美国公民身份"
+        },
+        "body_measurements": {
+          "height_cm": 168.8,
+          "weight_kg": 152.4,
+          "bmi": 53.49,
+          "waist_cm": 148.7
+        }
+      },
+      "lifestyle": {
+        "smoking": {
+          "summary": "一生累计吸烟不足100支",
+          "smoked_100_cigarettes_lifetime": "否",
+          "current_status": null,
+          "cigarettes_per_day_past_30d": null,
+          "smoking_days_past_30d": null,
+          "regular_smoking_start_age": null,
+          "household_smoke_exposure": "家中无吸烟者"
+        },
+        "alcohol": {
+          "summary": "过去一年饮酒少于12杯",
+          "at_least_12_drinks_past_year": "否",
+          "reported_frequency": null,
+          "average_drinks_per_day_when_reported": null
+        },
+        "physical_activity": {
+          "summary": "步行或骑车：否；剧烈娱乐活动：否；中等强度娱乐活动：否；久坐：300分钟/天",
+          "walk_or_bicycle_for_transport": "否",
+          "vigorous_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "moderate_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "sedentary_minutes_per_day": 300
+        },
+        "sleep": {
+          "summary": "工作日通常睡眠8小时",
+          "weekday_hours": 8,
+          "weekend_hours": null
+        },
+        "dietary_record": {
+          "record_type": "单日24小时膳食回顾",
+          "summary": "单日记录：能量1653 kcal，钠1766 mg，糖198.55 g，膳食纤维4.2 g",
+          "energy_kcal": 1653,
+          "sodium_mg": 1766,
+          "total_sugars_g": 198.55,
+          "dietary_fiber_g": 4.2,
+          "protein_g": 41.47,
+          "total_fat_g": 45.99,
+          "fast_food_or_pizza_meals": 2
+        }
+      },
+      "health_history": {
+        "known_diseases_and_comorbidities": [],
+        "known_disease_summary": "在已采集字段中未报告其他已知慢性病",
+        "family_medical_history": {
+          "close_relative_heart_attack": "否"
+        },
+        "psychological_status": {
+          "summary": "过去两周未报告兴趣减退或情绪低落",
+          "loss_of_interest_past_2_weeks": "完全没有",
+          "depressed_mood_past_2_weeks": "完全没有"
+        },
+        "current_symptoms": [
+          "爬楼或上坡时呼吸短促"
+        ],
+        "recent_health_events": {
+          "data_status": "当前数据未采集",
+          "items": []
+        },
+        "key_general_indicators": {
+          "pulse_rhythm": "规则",
+          "pulse_rate_bpm": 52,
+          "total_cholesterol_mg_dl": 185,
+          "hdl_cholesterol_mg_dl": 37,
+          "ldl_cholesterol_mg_dl": null,
+          "triglycerides_mg_dl": null
+        }
+      },
+      "data_status": {
+        "overall_status": "部分缺失",
+        "module_status": {
+          "basic_info": "核心字段完整",
+          "lifestyle": "核心字段完整",
+          "health_history": "核心字段完整"
+        },
+        "assessment_availability": {
+          "hypertension": "证据有限",
+          "diabetes": "可评估"
+        },
+        "missing_items": [
+          "用于结果复核的完整血压参考记录"
+        ],
+        "quality_notes": [
+          "BMI处于24名样例中的高端，属于极端体型样例。"
+        ]
+      }
+    },
+    {
+      "user_id": "US-024",
+      "source_reference": {
+        "survey_cycle": "2017-March 2020 Pre-pandemic",
+        "seqn": 113762
+      },
+      "basic_info": {
+        "display_name": "典型用户 US-024",
+        "age_years": 64,
+        "age_stage": "老年（60-74岁）",
+        "gender": "男性",
+        "education": "低于9年级",
+        "marital_status": "已婚或与伴侣同居",
+        "household_size": null,
+        "economic_status": {
+          "annual_household_income": null,
+          "family_income_to_poverty_ratio": 1.92
+        },
+        "demographic_background": {
+          "race_ethnicity": "非西班牙裔亚裔",
+          "citizenship": null
+        },
+        "body_measurements": {
+          "height_cm": 164.8,
+          "weight_kg": 60.4,
+          "bmi": 22.2,
+          "waist_cm": 77.8
+        }
+      },
+      "lifestyle": {
+        "smoking": {
+          "summary": "当前每日吸烟",
+          "smoked_100_cigarettes_lifetime": "是",
+          "current_status": "每天",
+          "cigarettes_per_day_past_30d": 10,
+          "smoking_days_past_30d": 30,
+          "regular_smoking_start_age": 20,
+          "household_smoke_exposure": "未记录"
+        },
+        "alcohol": {
+          "summary": "饮酒情况未记录",
+          "at_least_12_drinks_past_year": null,
+          "reported_frequency": null,
+          "average_drinks_per_day_when_reported": null
+        },
+        "physical_activity": {
+          "summary": "步行或骑车：否；剧烈娱乐活动：否；中等强度娱乐活动：否；久坐：120分钟/天",
+          "walk_or_bicycle_for_transport": "否",
+          "vigorous_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "moderate_recreation": {
+            "reported": "否",
+            "days_per_week": null,
+            "minutes_per_day": null
+          },
+          "sedentary_minutes_per_day": 120
+        },
+        "sleep": {
+          "summary": "工作日通常睡眠8.5小时，周末8.5小时",
+          "weekday_hours": 8.5,
+          "weekend_hours": 8.5
+        },
+        "dietary_record": {
+          "record_type": "单日24小时膳食回顾",
+          "summary": "无单日24小时膳食回顾记录",
+          "energy_kcal": null,
+          "sodium_mg": null,
+          "total_sugars_g": null,
+          "dietary_fiber_g": null,
+          "protein_g": null,
+          "total_fat_g": null,
+          "fast_food_or_pizza_meals": null
+        }
+      },
+      "health_history": {
+        "known_diseases_and_comorbidities": [],
+        "known_disease_summary": "在已采集字段中未报告其他已知慢性病",
+        "family_medical_history": {
+          "close_relative_heart_attack": "否"
+        },
+        "psychological_status": {
+          "summary": "未记录",
+          "loss_of_interest_past_2_weeks": null,
+          "depressed_mood_past_2_weeks": null
+        },
+        "current_symptoms": [
+          "爬楼或上坡时呼吸短促"
+        ],
+        "recent_health_events": {
+          "data_status": "当前数据未采集",
+          "items": []
+        },
+        "key_general_indicators": {
+          "pulse_rhythm": null,
+          "pulse_rate_bpm": null,
+          "total_cholesterol_mg_dl": 190,
+          "hdl_cholesterol_mg_dl": 70,
+          "ldl_cholesterol_mg_dl": null,
+          "triglycerides_mg_dl": null
+        }
+      },
+      "data_status": {
+        "overall_status": "部分缺失",
+        "module_status": {
+          "basic_info": "核心字段完整",
+          "lifestyle": "部分缺失",
+          "health_history": "部分缺失"
+        },
+        "assessment_availability": {
+          "hypertension": "证据有限",
+          "diabetes": "可评估"
+        },
+        "missing_items": [
+          "家庭人数",
+          "家庭收入",
+          "公民身份",
+          "饮酒情况",
+          "单日膳食回顾",
+          "脉搏",
+          "用于结果复核的完整血压参考记录"
+        ],
+        "quality_notes": []
+      }
+    }
+  ]
+}

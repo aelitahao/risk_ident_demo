@@ -1,0 +1,6 @@
+# Local project documentation
+PROJECT_STRUCTURE.md
+
+# Large source datasets used for offline analysis/modeling
+data/source/
+
