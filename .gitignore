@@ -1,5 +1,6 @@
 # Local project documentation
 PROJECT_STRUCTURE.md
+CLAUDE.md
 
 # Large source datasets used for offline analysis/modeling
 data/source/
