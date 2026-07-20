@@ -11,8 +11,10 @@
 - 查看基本信息、生活方式和健康史；
 - 同时生成糖尿病与高血压风险结果；
 - 展示低、中、高风险等级及筛查优先级；
-- 数据不足时明确标记“证据有限”；
-- 支持数据库用户和问卷数据两种预测入口；
+- 支持「生活方式筛查」和「综合健康画像」两种评估模式切换；
+- 展示预生成的整体总结与风险因素解释文本（模式感知）；
+- 数据不足时明确标记「证据有限」，并列出缺失字段清单；
+- 支持数据库用户和问卷两种预测入口，问卷页面已上线；
 - 对外响应隐藏内部评分和模型权重；
 - 阻止血压、HbA1c、空腹血糖等目标泄漏字段进入预测。
 
@@ -64,7 +66,8 @@ npm test
 | 页面 | 地址 | 功能 |
 |---|---|---|
 | 用户列表 | `/#/users` | 查看全部用户并按用户 ID 搜索。 |
-| 用户详情 | `/#/users/{userId}` | 查看健康画像并执行风险预测。 |
+| 用户详情 | `/#/users/{userId}` | 查看健康画像、切换评估模式并执行风险预测。 |
+| 问卷模式 | `/#/questionnaire` | 匿名填写健康信息并生成同款风险结果。 |
 
 前端使用 Hash 路由，因此页面路径中的 `#` 需要保留。
 
@@ -87,7 +90,16 @@ GET /api/v1/users/{userId}
 
 ```http
 POST /api/v1/users/{userId}/prediction
+Content-Type: application/json
 ```
+
+请求体可选：
+
+```json
+{ "mode": "lifestyle_screening" }
+```
+
+`mode` 支持 `lifestyle_screening`（默认）与 `comprehensive_profile`。请求体缺省或省略时按默认值处理。
 
 ### 提交问卷预测
 
@@ -101,6 +113,7 @@ Content-Type: application/json
 ```json
 {
   "source": "questionnaire",
+  "mode": "lifestyle_screening",
   "input": {
     "basicInfo": {
       "ageYears": 42,
@@ -132,7 +145,7 @@ Content-Type: application/json
 }
 ```
 
-预测响应包含两种疾病：
+预测响应包含两种疾病、当前模式与可选解释：
 
 ```json
 {
@@ -140,6 +153,8 @@ Content-Type: application/json
   "userId": null,
   "modelVersion": "demo_fallback_rule_v1",
   "featureSchemaVersion": "1.0",
+  "mode": "lifestyle_screening",
+  "overallSummary": "……（预生成整体总结，仅数据库路径命中解释卡时出现）",
   "diseases": [
     {
       "diseaseId": "diabetes",
@@ -147,7 +162,12 @@ Content-Type: application/json
       "screeningPriority": "routine",
       "evidenceLevel": "sufficient",
       "riskFactors": [],
-      "protectiveFactors": []
+      "protectiveFactors": [],
+      "explanation": {
+        "riskConclusion": "……",
+        "mainFactorExplanations": [{ "factorId": "...", "explanation": "..." }],
+        "protectiveFactorExplanations": []
+      }
     },
     {
       "diseaseId": "hypertension",
@@ -161,6 +181,9 @@ Content-Type: application/json
   "boundaryNote": "结果来自演示占位规则，不是患病概率、未来发病预测或临床诊断。"
 }
 ```
+
+- 兜底路径（匿名问卷或缺卡用户）不返回 `overallSummary` 与 `explanation`；证据有限时每个疾病对象追加 `missingEvidenceFields: string[]`。
+- 数据库路径读取用户预生成风险卡；当请求 `comprehensive_profile` 但该模式无预生成节点时，会显式回退到 `lifestyle_screening` 并返回 `modeFallback: true`。
 
 ## 项目结构
 
@@ -203,19 +226,19 @@ risk_ident_demo/
 
 ```text
 数据库用户 ─┐
-            ├─> PredictionInput ─> 输入校验 ─> 统一预测服务 ─> 风险结果
+            ├─> PredictionInput ─> 输入校验 ─> 统一预测服务 ─> 风险结果（含 mode 字段）
 问卷输入   ─┘
 ```
 
-对于 Demo 数据库中已有风险卡的用户，预测服务会读取预生成的 `lifestyle_screening` 结果；对于匿名问卷或没有预生成结果的用户，则使用确定性的兜底规则引擎。
+对于 Demo 数据库中已有风险卡的用户，预测服务按请求的 `mode` 读取预生成的 `lifestyle_screening` 或 `comprehensive_profile` 结果，并挂载对应的解释文本；缺失模式节点时显式回退到 `lifestyle_screening` 并返回 `modeFallback: true`。匿名问卷或没有预生成结果的用户走确定性兜底规则引擎，兜底引擎对糖尿病与高血压独立评分，`mode` 仅在响应中回显不影响评分。
 
 ## 数据说明
 
 `data/demo/` 包含前端演示所需的匿名数据：
 
 - `user_profiles.json`：24 名用户的健康画像；
-- `risk_results.json`：糖尿病和高血压预生成风险结果；
-- `risk_explanations.json`：风险解释文本，目前尚未进入前端和公开 API。
+- `risk_results.json`：糖尿病和高血压预生成风险结果，覆盖 `lifestyle_screening` 与 `comprehensive_profile` 两种模式；
+- `risk_explanations.json`：预生成解释文本（整体总结 + 分疾病风险因素解释），仅命中风险卡的用户在响应中返回。
 
 `data/source/` 保存体积较大的原始及模型准备数据，仅用于离线分析和后续建模，Web 应用不会读取，并已通过 `.gitignore` 排除。
 
@@ -263,10 +286,8 @@ API 使用统一错误结构：
 
 项目暂不包括：
 
-- 问卷填写页面；
 - 真实模型训练和概率校准；
 - 临床诊断功能；
 - EHR 接入；
-- 多种评估模式切换与比较；
-- 在线大模型解释。
+- 在线大模型解释（仅使用预生成文本）。
 

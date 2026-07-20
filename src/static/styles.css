@@ -165,6 +165,47 @@ main {
 
 .actions {
   margin: 16px 0 24px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.mode-switcher {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--panel);
+}
+
+.mode-option {
+  border: none;
+  background: transparent;
+  padding: 8px 14px;
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+  border-right: 1px solid var(--border);
+}
+
+.mode-option:last-child {
+  border-right: none;
+}
+
+.mode-option.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.mode-fallback-note {
+  background: #fff2dd;
+  color: var(--medium);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 12px;
 }
 
 button.primary {
@@ -226,6 +267,12 @@ button.primary:disabled {
   margin-bottom: 12px;
 }
 
+.evidence-warning .missing-fields {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--high);
+}
+
 .factor-list {
   margin: 8px 0 0;
   padding-left: 18px;
@@ -239,6 +286,29 @@ button.primary:disabled {
 .factor-list .evidence {
   color: var(--muted);
   font-size: 12px;
+}
+
+.factor-list .factor-explanation {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.overall-summary {
+  margin: 0 0 16px;
+  padding: 10px 14px;
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.risk-conclusion {
+  margin: 10px 0 4px;
+  font-size: 13px;
+  color: var(--text);
 }
 
 .boundary-note {
@@ -256,4 +326,76 @@ button.primary:disabled {
   padding: 12px 16px;
   border-radius: 6px;
   margin-bottom: 16px;
+}
+
+.nav-link {
+  margin-left: auto;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 13px;
+  border: 1px solid var(--accent);
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+.nav-link:hover {
+  background: var(--accent-soft);
+}
+
+.questionnaire-form .form-section {
+  margin-bottom: 16px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px 20px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+}
+
+.form-field label {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 14px;
+  background: var(--panel);
+  font-family: inherit;
+}
+
+.form-field textarea {
+  resize: vertical;
+  min-height: 40px;
+}
+
+.form-field .input-error {
+  border-color: var(--high);
+  background: var(--danger-soft);
+}
+
+.field-error {
+  color: var(--high);
+  font-size: 12px;
+  min-height: 14px;
+}
+
+.field-hint {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+#form-global-error {
+  margin: 12px 0;
 }
