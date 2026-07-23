@@ -69,6 +69,41 @@ function pair(label, value) {
   return [h('dt', {}, label), h('dd', {}, value ?? '未记录')];
 }
 
+function renderSourceSwitcher(current) {
+  const items = [
+    {
+      id: 'database',
+      href: '#/users',
+      eyebrow: '已有档案',
+      title: '数据库模式',
+      description: '从演示用户档案中选择对象进行风险筛查',
+    },
+    {
+      id: 'questionnaire',
+      href: '#/questionnaire',
+      eyebrow: '匿名录入',
+      title: '问卷模式',
+      description: '填写一份新的健康问卷并即时生成结果',
+    },
+  ];
+
+  return h('nav', { class: 'source-switcher', 'aria-label': '数据来源模式' },
+    items.map((item) => h('a', {
+      class: `source-option${item.id === current ? ' active' : ''}`,
+      href: item.href,
+      'aria-current': item.id === current ? 'page' : null,
+    }, [
+      h('span', { class: 'source-icon', 'aria-hidden': 'true' }, item.id === 'database' ? '▦' : '✓'),
+      h('span', { class: 'source-copy' }, [
+        h('small', {}, item.eyebrow),
+        h('strong', {}, item.title),
+        h('span', {}, item.description),
+      ]),
+      h('span', { class: 'source-arrow', 'aria-hidden': 'true' }, '→'),
+    ])),
+  );
+}
+
 function usersRoute() {
   const state = { q: '', total: 0, users: [] };
 
@@ -78,10 +113,6 @@ function usersRoute() {
     'aria-label': '按用户 ID 搜索',
   });
   const countEl = h('span', { class: 'count' }, '');
-  const questionnaireLink = h('a', {
-    class: 'nav-link',
-    href: '#/questionnaire',
-  }, '打开问卷模式');
   const tbody = h('tbody');
 
   const table = h('table', { class: 'user-table' }, [
@@ -97,8 +128,25 @@ function usersRoute() {
     tbody,
   ]);
 
-  const toolbar = h('div', { class: 'toolbar' }, [searchInput, countEl, questionnaireLink]);
-  const container = h('div', {}, [toolbar, table]);
+  const toolbar = h('div', { class: 'toolbar' }, [
+    h('div', { class: 'search-wrap' }, searchInput),
+    countEl,
+  ]);
+  const container = h('div', {}, [
+    h('div', { class: 'page-heading' }, [
+      h('h1', {}, '慢病风险筛查'),
+      h('p', { class: 'subtitle' }, '选择数据来源，以已有健康档案或匿名问卷发起风险筛查。'),
+    ]),
+    renderSourceSwitcher('database'),
+    h('div', { class: 'content-heading' }, [
+      h('div', {}, [
+        h('h2', {}, '数据库用户'),
+        h('p', {}, '选择一份已有健康档案查看详情'),
+      ]),
+    ]),
+    toolbar,
+    h('div', { class: 'table-shell' }, table),
+  ]);
 
   function renderRows() {
     tbody.replaceChildren();
@@ -108,13 +156,13 @@ function usersRoute() {
     }
     for (const u of state.users) {
       const row = h('tr', { onclick: () => (location.hash = `#/users/${u.userId}`) }, [
-        h('td', {}, u.userId),
-        h('td', {}, fmt(u.ageYears)),
-        h('td', {}, GENDER_LABEL[u.gender] ?? '—'),
-        h('td', {}, fmt(u.bmi)),
-        h('td', {}, fmt(u.waistCm, ' cm')),
-        h('td', {}, u.lifestyleSummary ?? '—'),
-        h('td', {}, h('span', { class: `status-badge ${u.dataStatus}` }, DATA_STATUS_LABEL[u.dataStatus] ?? u.dataStatus)),
+        h('td', { 'data-label': '用户 ID' }, u.userId),
+        h('td', { 'data-label': '年龄' }, fmt(u.ageYears)),
+        h('td', { 'data-label': '性别' }, GENDER_LABEL[u.gender] ?? '—'),
+        h('td', { 'data-label': 'BMI' }, fmt(u.bmi)),
+        h('td', { 'data-label': '腰围' }, fmt(u.waistCm, ' cm')),
+        h('td', { 'data-label': '生活方式摘要' }, u.lifestyleSummary ?? '—'),
+        h('td', { 'data-label': '数据状态' }, h('span', { class: `status-badge ${u.dataStatus}` }, DATA_STATUS_LABEL[u.dataStatus] ?? u.dataStatus)),
       ]);
       tbody.append(row);
     }
@@ -279,7 +327,10 @@ function renderModeSwitcher(currentMode, onChange) {
 async function userDetailRoute(userId) {
   const container = h('div', {}, [
     h('div', {}, h('a', { class: 'back-link', href: '#/users' }, '← 返回列表')),
-    h('h2', {}, `用户 ${userId}`),
+    h('div', { class: 'page-heading' }, [
+      h('h1', {}, `用户 ${userId}`),
+      h('p', { class: 'subtitle' }, '查看健康画像并选择评估模式生成风险筛查结果。'),
+    ]),
     h('div', { id: 'profile-slot' }, h('p', { class: 'loading' }, '加载中…')),
     h('div', { class: 'actions', id: 'action-slot' }),
     h('div', { id: 'result-slot' }),
@@ -294,7 +345,7 @@ async function userDetailRoute(userId) {
   let hasResult = false;
 
   async function runPrediction(mode) {
-    resultSlot.replaceChildren(h('p', { class: 'loading' }, '预测中…'));
+    resultSlot.replaceChildren(h('p', { class: 'loading' }, [h('span', { class: 'spinner' }), '预测中…']));
     try {
       const result = await api(`/api/v1/users/${encodeURIComponent(userId)}/prediction`, {
         method: 'POST',
@@ -427,6 +478,30 @@ function questionnaireRoute() {
     textareaField('healthHistory.currentSymptoms', '当前症状', '英文/中文逗号或换行分隔'),
   ]);
 
+  const heightInput = fields.get('basicInfo.heightCm');
+  const weightInput = fields.get('basicInfo.weightKg');
+  const bmiInput = fields.get('basicInfo.bmi');
+  let bmiManuallyEdited = false;
+
+  function updateDerivedBmi() {
+    if (bmiManuallyEdited) return;
+    const heightCm = num(heightInput.value);
+    const weightKg = num(weightInput.value);
+    const canDerive = heightCm > 0 && weightKg > 0;
+    bmiInput.value = canDerive
+      ? (weightKg / ((heightCm / 100) ** 2)).toFixed(1)
+      : '';
+    bmiInput.classList.toggle('derived-value', canDerive);
+  }
+
+  heightInput.addEventListener('input', updateDerivedBmi);
+  weightInput.addEventListener('input', updateDerivedBmi);
+  bmiInput.addEventListener('input', () => {
+    bmiManuallyEdited = bmiInput.value !== '';
+    bmiInput.classList.remove('derived-value');
+    if (!bmiManuallyEdited) updateDerivedBmi();
+  });
+
   const resultSlot = h('div', { id: 'result-slot' });
 
   function collectInput() {
@@ -530,9 +605,17 @@ function questionnaireRoute() {
   });
 
   const container = h('div', {}, [
-    h('div', {}, h('a', { class: 'back-link', href: '#/users' }, '← 返回用户列表')),
-    h('h2', {}, '问卷模式'),
-    h('p', { class: 'subtitle' }, '匿名提交同款 PredictionInput，与数据库入口共用同一预测服务。'),
+    h('div', { class: 'page-heading' }, [
+      h('h1', {}, '慢病风险筛查'),
+      h('p', { class: 'subtitle' }, '选择数据来源，以已有健康档案或匿名问卷发起风险筛查。'),
+    ]),
+    renderSourceSwitcher('questionnaire'),
+    h('div', { class: 'content-heading' }, [
+      h('div', {}, [
+        h('h2', {}, '匿名健康问卷'),
+        h('p', {}, '填写信息以生成糖尿病与高血压风险筛查结果，带 * 项为必填'),
+      ]),
+    ]),
     formEl,
   ]);
   render(container);
