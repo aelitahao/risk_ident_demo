@@ -111,7 +111,7 @@ export function collectFactorsFor(diseaseId, input) {
   return { risk, protective };
 }
 
-const EVIDENCE_FIELD_PATHS = [
+export const EVIDENCE_FIELD_PATHS = [
   ['basicInfo.bmi', (i) => i.basicInfo?.bmi],
   ['basicInfo.waistCm', (i) => i.basicInfo?.waistCm],
   ['lifestyle.smokingStatus', (i) => i.lifestyle?.smokingStatus],
@@ -119,7 +119,7 @@ const EVIDENCE_FIELD_PATHS = [
   ['lifestyle.weekdaySleepHours', (i) => i.lifestyle?.weekdaySleepHours],
 ];
 
-function evidenceSummary(input) {
+export function evidenceSummary(input) {
   const missing = EVIDENCE_FIELD_PATHS.filter(([, get]) => get(input) == null).map(([path]) => path);
   return { level: missing.length > 2 ? 'limited' : 'sufficient', missing };
 }

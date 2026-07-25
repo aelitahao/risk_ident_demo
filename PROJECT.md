@@ -90,6 +90,20 @@ interface PredictionInput {
     currentSymptoms: string[];
     generalIndicators: Record<string, unknown>;
   };
+  staticAttr?: {
+    demographics?: { education?: string | null };
+    familyBackground?: {
+      familyStructure?: string | null;
+      familyLivingConditions?: string | null;
+    };
+    economicCare?: {
+      economicStatus?: string | null;
+      medicalExpenseLevel?: string | null;
+    };
+    healthHistory?: { psychologicalDisorder?: string | null };
+    livingEnvironment?: { residentialEnv?: string | null };
+    lifestyleTrait?: { hobbies?: string | null };
+  };
   featureSchemaVersion: '1.0';
 }
 ```
@@ -124,6 +138,15 @@ interface PredictionInput {
 | `healthHistory.familyHistory` | object | 结构不约束 | `{}` |
 | `healthHistory.currentSymptoms` | string[] | 受控词表 | `[]` |
 | `healthHistory.generalIndicators` | object | 结构不约束；禁止包含血压、HbA1c、空腹血糖 | `{}` |
+| `staticAttr` | object | 可选扩展块；整体缺省即不使用 | 省略或 `null` |
+| `staticAttr.demographics.education` | string | 自由文本，≤ 200 字符 | `null` |
+| `staticAttr.familyBackground.familyStructure` | string | 自由文本，≤ 200 字符 | `null` |
+| `staticAttr.familyBackground.familyLivingConditions` | string | 自由文本，≤ 200 字符 | `null` |
+| `staticAttr.economicCare.economicStatus` | string | 自由文本，≤ 200 字符 | `null` |
+| `staticAttr.economicCare.medicalExpenseLevel` | string | 自由文本，≤ 200 字符 | `null` |
+| `staticAttr.healthHistory.psychologicalDisorder` | string | 自由文本，≤ 200 字符；与 `healthHistory.knownDiseases` 不重复 | `null` |
+| `staticAttr.livingEnvironment.residentialEnv` | string | 自由文本，≤ 200 字符 | `null` |
+| `staticAttr.lifestyleTrait.hobbies` | string | 自由文本，≤ 200 字符 | `null` |
 | `featureSchemaVersion` | string | 当前固定 `"1.0"` | 必填 |
 
 校验失败时返回 `400`（见 5.3）。

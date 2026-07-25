@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { withServer, req } from './_helpers.js';
 
-test('anonymous questionnaire prediction has no explanation field (fallback engine path)', async () => {
+test('prediction returns diseases with required fields and no explanation for anonymous input', async () => {
   const input = {
     basicInfo: { ageYears: 40, gender: 'male', heightCm: 175, weightKg: 70, bmi: 22.9, waistCm: 82 },
     lifestyle: {
@@ -22,9 +22,11 @@ test('anonymous questionnaire prediction has no explanation field (fallback engi
     const { status, json } = await req(base, 'POST', '/api/v1/predictions', { input, source: 'questionnaire' });
     assert.equal(status, 200);
     assert.equal(json.userId, null);
-    assert.equal(json.overallSummary, undefined, 'anonymous input should not carry overallSummary');
+    assert.equal(json.overallSummary, undefined);
+    assert.ok(Array.isArray(json.diseases));
     for (const d of json.diseases) {
-      assert.equal(d.explanation, undefined, `${d.diseaseId} should not have explanation on fallback path`);
+      assert.ok(['low', 'medium', 'high'].includes(d.riskLevel));
+      assert.equal(d.explanation, undefined);
     }
   });
 });

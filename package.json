@@ -9,5 +9,8 @@
   "scripts": {
     "start": "node src/server.js",
     "test": "node --test"
+  },
+  "dependencies": {
+    "openai": "^6.49.0"
   }
 }

@@ -3,17 +3,13 @@ import { invalidInput, schemaVersionUnsupported, targetLeakage } from '../errors
 const GENDER_ENUM = new Set(['male', 'female', 'other']);
 const SMOKING_ENUM = new Set(['never', 'former', 'current']);
 const MODE_ENUM = new Set(['lifestyle_screening', 'comprehensive_profile']);
-const DEFAULT_MODE = 'lifestyle_screening';
 
 export function validateMode(mode) {
-  if (mode == null) return DEFAULT_MODE;
+  if (mode == null) return;
   if (!MODE_ENUM.has(mode)) {
     throw invalidInput([{ field: 'mode', reason: 'must be lifestyle_screening|comprehensive_profile' }]);
   }
-  return mode;
 }
-
-export { DEFAULT_MODE };
 
 const LEAKAGE_KEY_PATTERNS = [
   /blood_pressure/i,
@@ -54,6 +50,63 @@ function checkOptionalInt(details, path, v, lo, hi) {
   }
   if (!inRange(v, lo, hi)) {
     details.push({ field: path, reason: `must be within [${lo}, ${hi}]` });
+  }
+}
+
+function checkOptionalString(details, path, v, max = 200) {
+  if (v == null) return;
+  if (typeof v !== 'string') {
+    details.push({ field: path, reason: 'must be string or null' });
+    return;
+  }
+  if (v.length > max) {
+    details.push({ field: path, reason: `string ≤ ${max} chars` });
+  }
+}
+
+function checkOptionalObject(details, path, v) {
+  if (v == null) return true;
+  if (typeof v !== 'object' || Array.isArray(v)) {
+    details.push({ field: path, reason: 'must be object or null' });
+    return false;
+  }
+  return true;
+}
+
+function validateStaticAttr(details, staticAttr) {
+  if (!checkOptionalObject(details, 'staticAttr', staticAttr)) return;
+  if (staticAttr == null) return;
+
+  const demo = staticAttr.demographics;
+  if (checkOptionalObject(details, 'staticAttr.demographics', demo) && demo != null) {
+    checkOptionalString(details, 'staticAttr.demographics.education', demo.education);
+  }
+
+  const fam = staticAttr.familyBackground;
+  if (checkOptionalObject(details, 'staticAttr.familyBackground', fam) && fam != null) {
+    checkOptionalString(details, 'staticAttr.familyBackground.familyStructure', fam.familyStructure);
+    checkOptionalString(details, 'staticAttr.familyBackground.familyLivingConditions', fam.familyLivingConditions);
+  }
+
+  const eco = staticAttr.economicCare;
+  if (checkOptionalObject(details, 'staticAttr.economicCare', eco) && eco != null) {
+    checkOptionalString(details, 'staticAttr.economicCare.economicStatus', eco.economicStatus);
+    checkOptionalString(details, 'staticAttr.economicCare.medicalExpenseLevel', eco.medicalExpenseLevel);
+  }
+
+  const hh = staticAttr.healthHistory;
+  if (checkOptionalObject(details, 'staticAttr.healthHistory', hh) && hh != null) {
+    checkOptionalString(details, 'staticAttr.healthHistory.psychologicalDisorder', hh.psychologicalDisorder);
+  }
+
+  const env = staticAttr.livingEnvironment;
+  if (checkOptionalObject(details, 'staticAttr.livingEnvironment', env) && env != null) {
+    checkOptionalString(details, 'staticAttr.livingEnvironment.residentialEnv', env.residentialEnv);
+  }
+
+  const trait = staticAttr.lifestyleTrait;
+  if (checkOptionalObject(details, 'staticAttr.lifestyleTrait', trait) && trait != null) {
+    checkOptionalString(details, 'staticAttr.lifestyleTrait.hobbies', trait.hobbies);
   }
 }
 
@@ -125,6 +178,8 @@ export function validatePredictionInput(input) {
       details.push({ field: 'healthHistory.generalIndicators', reason: 'object' });
     }
   }
+
+  validateStaticAttr(details, input.staticAttr);
 
   if (details.length) throw invalidInput(details);
 
