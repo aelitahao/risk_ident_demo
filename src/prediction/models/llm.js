@@ -1,10 +1,10 @@
-// LLM-based prediction model using DeepSeek via OpenAI-compatible SDK
+// LLM-based prediction model via OpenAI-compatible endpoint (ChatAnywhere)
 // Requires: npm install openai
 
-export const MODEL_ID = 'llm_deepseek_v1';
+export const MODEL_ID = 'llm_v1';
 
-const LLM_API_KEY  = process.env.LLM_API_KEY  ?? 'sk-c225e3a386bc4958ba44268a559f61f1';
-const LLM_BASE_URL = process.env.LLM_BASE_URL ?? 'https://api.deepseek.com';
+const LLM_API_KEY  = process.env.LLM_API_KEY  ?? 'sk-9K3HSAtRJVL1swyxyKlOKqEtg3dEMjjimfJVFnNjsYLXsxzk';
+const LLM_BASE_URL = process.env.LLM_BASE_URL ?? 'https://api.chatanywhere.tech/v1';
 const LLM_MODEL    = process.env.LLM_MODEL    ?? 'deepseek-v4-flash';
 
 const SYSTEM_PROMPT = `You are a clinical risk screening assistant.
@@ -34,8 +34,7 @@ export async function predict(input) {
       { role: 'system', content: SYSTEM_PROMPT },
       { role: 'user',   content: JSON.stringify(input) },
     ],
-    thinking: { type: 'enabled' },
-    reasoning_effort: 'low',
+    response_format: { type: 'json_object' },
     stream: false,
   });
   const raw = JSON.parse(completion.choices[0].message.content);

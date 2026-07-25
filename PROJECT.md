@@ -15,7 +15,7 @@
 问卷提交   ─┘
 ```
 
-两个入口均已上线，共用同一 `predict(input, { mode })` 服务、同一 `PredictionInput` 契约与同一结果组件。
+两个入口均已上线，共用同一 `predict(input)` 服务、同一 `PredictionInput` 契约与同一结果组件。预测服务背后的模型可插拔（回归模型 / LLM），由 `PREDICTION_MODEL` 环境变量选择。
 
 ## 2. 当前功能
 
@@ -34,21 +34,19 @@
 - 生活方式：吸烟、饮酒、活动、久坐、睡眠和单日 24 小时膳食回顾；
 - 健康史：其他已知疾病、家族史、症状、心理状态和一般健康指标。
 
-详情页提供「评估模式切换」（`lifestyle_screening` / `comprehensive_profile`）与「风险预测」操作。当前同时预测糖尿病和高血压，不要求用户单独选择疾病。
+详情页提供「风险预测」操作。当前同时预测糖尿病和高血压，不要求用户单独选择疾病。
 
 ### 2.3 风险结果
 
 结果以一份用户级报告展示：
 
-- 当前评估模式（`mode`）；
+- 使用的模型版本（`modelVersion`）；
 - 糖尿病风险等级；
 - 高血压风险等级；
 - 筛查优先级；
-- 证据状态；证据有限时列出兜底路径的缺失字段清单（`missingEvidenceFields`）；
+- 证据状态；证据有限时列出缺失字段清单（`missingEvidenceFields`）；
 - 主要风险因素与保护因素；
-- 若命中预生成解释卡，则同时展示整体总结与每个风险/保护因素的解释文本；
-- 必要的结果边界说明；
-- 当请求 `comprehensive_profile` 但用户的风险卡未覆盖该模式时，响应带 `modeFallback: true` 并回退到 `lifestyle_screening`。
+- 必要的结果边界说明。
 
 Demo 结果用于风险筛查展示，不代表患病概率或临床诊断。界面不展示内部评分、模型权重和源数据记录标识。
 
@@ -56,7 +54,6 @@ Demo 结果用于风险筛查展示，不代表患病概率或临床诊断。界
 
 - 页面路径 `/#/questionnaire`，无需登录、无 `userId`；
 - 表单字段严格对齐 §3.1 校验表；不设血压、HbA1c、空腹血糖等目标泄漏字段的输入框；
-- 支持与数据库入口同一套评估模式切换；
 - 校验失败时按 `INVALID_INPUT.details[].field` 高亮对应输入框并给出错误原因；
 - 结果卡与数据库详情页复用同一组件。
 
@@ -168,25 +165,44 @@ risk_ident_demo/
       └─ strict_v2_final_data_dictionary.csv
 ```
 
-应用代码落地时建议只保留三个业务模块：
+应用代码保留三个业务模块：
 
 ```text
 users       用户查询与画像
-prediction  统一输入转换、校验和模型调用
-results     风险结果展示
+prediction  统一输入转换、校验、模型调用与结果润色
+results     解释挂载工具
 ```
 
-不为数据库入口和问卷入口分别建立模型模块。
+不为数据库入口和问卷入口分别建立模型模块。`prediction` 内部再分层：
+
+```text
+prediction/
+├─ mapper.js          # 数据库画像 → PredictionInput
+├─ validator.js       # 输入校验与目标泄漏拦截
+├─ service.js         # 唯一入口：校验 → 取模型 → 预测 → 润色
+├─ engine.js          # 因子提取逻辑，供回归模型复用
+├─ polisher.js        # RawPrediction（0–1 分数）→ PredictionResult
+└─ models/
+   ├─ index.js        # getModel(name?) 工厂，读 PREDICTION_MODEL
+   ├─ regression.js   # 简单线性打分模型
+   └─ llm.js          # DeepSeek LLM 模型
+```
 
 ### 本地运行
 
-项目只依赖 Node.js 20 及以上版本，无需安装第三方包：
+项目依赖 Node.js 20 及以上版本；LLM 模型需要 `openai` 包：
 
 ```bash
 npm start
 ```
 
-浏览器访问 `http://localhost:3000`。运行自动化测试：
+浏览器访问 `http://localhost:3000`。切换到 LLM 模型：
+
+```bash
+PREDICTION_MODEL=llm npm start
+```
+
+运行自动化测试：
 
 ```bash
 npm test
@@ -203,7 +219,7 @@ POST /api/v1/users/{userId}/prediction
 POST /api/v1/predictions
 ```
 
-`POST /users/{userId}/prediction` 的处理过程：读取用户、映射为 `PredictionInput`、调用统一预测服务、返回结果。可选请求体 `{ "mode": "lifestyle_screening" | "comprehensive_profile" }`（默认 `lifestyle_screening`）。
+`POST /users/{userId}/prediction` 的处理过程：读取用户、映射为 `PredictionInput`、调用统一预测服务、返回结果。请求体可为空或省略。
 
 响应结构：
 
@@ -241,12 +257,11 @@ Content-Type: application/json
 
 {
   "input": { "...": "PredictionInput" },
-  "source": "questionnaire",
-  "mode": "lifestyle_screening"
+  "source": "questionnaire"
 }
 ```
 
-数据库入口也可以在应用内部调用同一预测服务。`source` 仅用于追踪，不参与模型计算。`mode` 可选，默认 `lifestyle_screening`。
+数据库入口也可以在应用内部调用同一预测服务。`source` 仅用于追踪，不参与模型计算。
 
 匿名问卷示例（无 `userId`）：
 
@@ -258,8 +273,7 @@ Content-Type: application/json
     "healthHistory": { "knownDiseases": [], "familyHistory": { "diabetes": "mother" }, "currentSymptoms": [], "generalIndicators": {} },
     "featureSchemaVersion": "1.0"
   },
-  "source": "questionnaire",
-  "mode": "comprehensive_profile"
+  "source": "questionnaire"
 }
 ```
 
@@ -271,11 +285,8 @@ Content-Type: application/json
 interface PredictionResult {
   predictionId: string;
   userId: string | null;
-  modelVersion: string;
+  modelVersion: string;                // 使用的模型 ID，如 'regression_v1'、'llm_deepseek_v1'
   featureSchemaVersion: string;
-  mode: 'lifestyle_screening' | 'comprehensive_profile';
-  modeFallback?: true;                // 请求 comprehensive_profile 但风险卡缺该模式时出现
-  overallSummary?: string;             // 命中预生成解释卡时出现
   diseases: Array<{
     diseaseId: 'diabetes' | 'hypertension';
     riskLevel: 'low' | 'medium' | 'high';
@@ -283,12 +294,7 @@ interface PredictionResult {
     evidenceLevel: 'sufficient' | 'limited';
     riskFactors: Array<{ id: string; label: string; evidence: string }>;
     protectiveFactors: Array<{ id: string; label: string; evidence: string }>;
-    missingEvidenceFields?: string[];  // 仅兜底路径 limited 时出现，如 'basicInfo.bmi'
-    explanation?: {                    // 仅命中预生成解释卡时出现
-      riskConclusion?: string;
-      mainFactorExplanations?: Array<{ factorId: string; explanation: string }>;
-      protectiveFactorExplanations?: Array<{ factorId: string; explanation: string }>;
-    };
+    missingEvidenceFields?: string[];  // 仅 evidenceLevel 为 limited 时出现，如 'basicInfo.bmi'
   }>;
   boundaryNote: string;
 }
@@ -310,7 +316,7 @@ interface ErrorResponse {
 
 | HTTP 状态 | `code` | 触发条件 |
 |---|---|---|
-| 400 | `INVALID_INPUT` | `PredictionInput` 字段缺失、超出范围、枚举值非法；或 `mode` 非法枚举 |
+| 400 | `INVALID_INPUT` | `PredictionInput` 字段缺失、超出范围、枚举值非法 |
 | 400 | `SCHEMA_VERSION_UNSUPPORTED` | `featureSchemaVersion` 非 `"1.0"` |
 | 404 | `USER_NOT_FOUND` | `GET /users/{userId}` 或 `POST /users/{userId}/prediction` 的用户不存在 |
 | 422 | `TARGET_LEAKAGE` | `generalIndicators` 中出现禁止字段（血压、HbA1c、空腹血糖） |
@@ -318,21 +324,21 @@ interface ErrorResponse {
 
 ## 6. 数据与调用关系
 
-当前演示数据位于 `data/demo/`，三份文件通过 `user_id` 一一关联：
+当前演示数据位于 `data/demo/`：
 
 | 文件 | 内容 |
 |---|---|
-| `user_profiles.json` | 24 名匿名用户的基本信息、生活方式、健康史和数据状态 |
-| `risk_results.json` | 预生成的糖尿病、高血压风险结果，覆盖 `lifestyle_screening` 与 `comprehensive_profile` 两种模式 |
-| `risk_explanations.json` | 基于既有风险结果生成的说明文本（整体总结 + 分疾病风险因素解释），同样覆盖两种模式 |
+| `user_profiles.json` | 24 名匿名用户的基本信息、生活方式、健康史和数据状态；运行时由 `repository.js` 加载 |
+| `risk_results.json` | 预生成的风险结果，现仅作测试 fixture 保留，运行时不再读取 |
+| `risk_explanations.json` | 预生成解释文本，现仅作测试 fixture 保留，运行时不再读取 |
 
-预测服务按请求的 `mode` 读取对应节点并挂载解释；缺失模式节点时显式回退到 `lifestyle_screening` 并在响应加 `modeFallback: true`。后续接入真实模型时，只替换预测服务实现，不改变页面输入和响应结构。
+预测服务对 `PredictionInput` 调用所选模型（回归 / LLM）得到 0–1 分数，再由 `polisher.js` 转换为 `PredictionResult`。替换或新增模型只需在 `prediction/models/` 下实现 `predict(input)` 并在 `index.js` 注册，不改变页面输入和响应结构。
 
 ## 7. 页面范围
 
 ```text
 /#/users              用户列表
-/#/users/:userId      用户画像、模式切换与风险预测结果
+/#/users/:userId      用户画像与风险预测结果
 /#/questionnaire      匿名问卷录入与风险预测结果
 ```
 
@@ -351,14 +357,13 @@ interface ErrorResponse {
 | 7 | `POST /api/v1/predictions` 契约保留并使用同一 `PredictionInput` | `prediction.questionnaire_contract.test` |
 | 8 | 未来接入问卷页面或真实模型时，无需复制预测逻辑和结果页面 | `prediction.service_singleton.test` |
 | 9 | 校验失败、用户不存在、目标信息泄漏返回 5.3 规定的错误码 | `api.error_response.test` |
-| 10 | 兜底引擎对糖尿病与高血压独立评分 | `prediction.engine_per_disease.test` |
-| 11 | 命中预生成解释卡的用户返回整体总结与因子级解释；`factor_id` 与风险因素不匹配时不呈现 | `prediction.explanation_attached.test`、`prediction.explanation_grounding.test`、`prediction.explanation_missing.test` |
-| 12 | `comprehensive_profile` 模式返回不同风险因素集合；非法 `mode` 返回 `INVALID_INPUT` | `prediction.mode_comprehensive.test`、`prediction.mode_validation.test` |
+| 10 | 回归模型对糖尿病与高血压独立评分 | `prediction.engine_per_disease.test` |
+| 11 | 预测响应包含 `modelVersion` 且不携带内部评分 | `prediction.service_singleton.test`、`prediction.no_internal_score.test` |
+| 12 | `mode` 参数被忽略，预测仍正常返回 | `prediction.mode_validation.test`、`prediction.mode_comprehensive.test` |
 
 ## 9. 暂不实现
 
-- 真实模型训练、概率校准和临床诊断功能；
-- 在线大模型解释（当前仅使用预生成文本）；
+- 真实模型训练、概率校准和临床诊断功能（回归模型系数为演示占位，LLM 输出未经临床验证）；
 - EHR 接入与多用户账号、鉴权；
 - 移动端专属适配；
 - `data/source/` 原始数据进入运行时。

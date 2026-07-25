@@ -2,14 +2,6 @@ import { invalidInput, schemaVersionUnsupported, targetLeakage } from '../errors
 
 const GENDER_ENUM = new Set(['male', 'female', 'other']);
 const SMOKING_ENUM = new Set(['never', 'former', 'current']);
-const MODE_ENUM = new Set(['lifestyle_screening', 'comprehensive_profile']);
-
-export function validateMode(mode) {
-  if (mode == null) return;
-  if (!MODE_ENUM.has(mode)) {
-    throw invalidInput([{ field: 'mode', reason: 'must be lifestyle_screening|comprehensive_profile' }]);
-  }
-}
 
 const LEAKAGE_KEY_PATTERNS = [
   /blood_pressure/i,

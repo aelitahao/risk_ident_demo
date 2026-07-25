@@ -341,15 +341,14 @@ async function userDetailRoute(userId) {
   const actionSlot = container.querySelector('#action-slot');
   const resultSlot = container.querySelector('#result-slot');
 
-  let currentMode = 'lifestyle_screening';
   let hasResult = false;
 
-  async function runPrediction(mode) {
+  async function runPrediction() {
     resultSlot.replaceChildren(h('p', { class: 'loading' }, [h('span', { class: 'spinner' }), '预测中…']));
     try {
       const result = await api(`/api/v1/users/${encodeURIComponent(userId)}/prediction`, {
         method: 'POST',
-        body: { mode },
+        body: {},
       });
       hasResult = true;
       resultSlot.replaceChildren(renderResult(result));
@@ -359,14 +358,9 @@ async function userDetailRoute(userId) {
   }
 
   function rebuildActions() {
-    const switcher = renderModeSwitcher(currentMode, (m) => {
-      currentMode = m;
-      rebuildActions();
-      if (hasResult) runPrediction(currentMode);
-    });
     const btn = h('button', { class: 'primary' }, hasResult ? '重新预测' : '风险预测');
-    btn.addEventListener('click', () => runPrediction(currentMode));
-    actionSlot.replaceChildren(switcher, btn);
+    btn.addEventListener('click', () => runPrediction());
+    actionSlot.replaceChildren(btn);
   }
 
   try {
@@ -409,7 +403,6 @@ function csvArray(s) {
 }
 
 function questionnaireRoute() {
-  let currentMode = 'lifestyle_screening';
   const fields = new Map();
 
   function field(path, label, inputAttrs = {}, hint = null) {
@@ -554,15 +547,7 @@ function questionnaireRoute() {
   const submitBtn = h('button', { class: 'primary', type: 'submit' }, '生成风险预测');
   const globalError = h('div', { id: 'form-global-error' });
   const actionsRow = h('div', { class: 'actions' });
-
-  function renderActions() {
-    const switcher = renderModeSwitcher(currentMode, (m) => {
-      currentMode = m;
-      renderActions();
-    });
-    actionsRow.replaceChildren(switcher, submitBtn);
-  }
-  renderActions();
+  actionsRow.replaceChildren(submitBtn);
 
   const formEl = h('form', { class: 'questionnaire-form', novalidate: 'novalidate' }, [
     basicSection,
@@ -583,7 +568,7 @@ function questionnaireRoute() {
       const input = collectInput();
       const result = await api('/api/v1/predictions', {
         method: 'POST',
-        body: { input, source: 'questionnaire', mode: currentMode },
+        body: { input, source: 'questionnaire' },
       });
       clearFieldErrors();
       resultSlot.replaceChildren(renderResult(result));
