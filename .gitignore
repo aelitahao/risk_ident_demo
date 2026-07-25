@@ -6,6 +6,9 @@ IMPLEMENTATION_PLAN.md
 # Local Copilot/Claude settings
 .claude/
 
+# Installed dependencies
+node_modules/
+
 # Large source datasets used for offline analysis/modeling
 data/source/
 
