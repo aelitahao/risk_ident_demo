@@ -3,6 +3,9 @@ PROJECT_STRUCTURE.md
 CLAUDE.md
 IMPLEMENTATION_PLAN.md
 
+# Local Copilot/Claude settings
+.claude/
+
 # Large source datasets used for offline analysis/modeling
 data/source/
 
