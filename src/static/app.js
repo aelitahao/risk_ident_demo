@@ -252,9 +252,14 @@ function usersRoute() {
     renderRows();
   }
 
+  const DEBOUNCE_MS = 250;
+  let debounceTimer = null;
   searchInput.addEventListener('input', (e) => {
     state.q = e.target.value;
-    load(state.q).catch(showError);
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      load(state.q).catch(showError);
+    }, DEBOUNCE_MS);
   });
 
   render(container);
