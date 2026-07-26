@@ -329,25 +329,38 @@ function renderFactorItem(f, explanationText) {
   return h('li', {}, parts);
 }
 
+function renderConclusionBar(riskLevel, screeningPriority) {
+  const conclusionText =
+    `${RISK_LEVEL_LABEL[riskLevel] ?? riskLevel} · 建议${PRIORITY_LABEL[screeningPriority] ?? screeningPriority}`;
+  return h('div', {
+    class: `risk-conclusion-bar risk-${riskLevel}`,
+    role: 'status',
+  }, conclusionText);
+}
+
+function renderMeterRow(riskLevel) {
+  const levelIndex = { low: 0, medium: 1, high: 2 }[riskLevel];
+  if (levelIndex == null) return null;
+  const ordinal = `${levelIndex + 1}/3`;
+  return h('div', {
+    class: 'risk-meter-row',
+    role: 'img',
+    'aria-label': `风险等级：${RISK_LEVEL_LABEL[riskLevel]}（3 级中的第 ${levelIndex + 1} 级）`,
+  }, [
+    h('span', { class: 'risk-meter-label' }, '风险等级'),
+    h('div', { class: 'risk-meter', 'aria-hidden': 'true' },
+      [0, 1, 2].map((i) => h('span', {
+        class: `risk-meter-seg${i <= levelIndex ? ' filled' : ''}`,
+      })),
+    ),
+    h('span', { class: 'risk-meter-ordinal' }, ordinal),
+  ]);
+}
+
 function renderDiseaseCard(d) {
   const expl = d.explanation ?? {};
   const mainExpls = explanationLookup(expl.mainFactorExplanations);
   const protectiveExpls = explanationLookup(expl.protectiveFactorExplanations);
-
-  const levelIndex = { low: 0, medium: 1, high: 2 }[d.riskLevel];
-  const meter = levelIndex == null ? null : h('div', {
-    class: 'risk-meter',
-    role: 'img',
-    'aria-label': `风险等级：${RISK_LEVEL_LABEL[d.riskLevel]}（三级中的第 ${levelIndex + 1} 级）`,
-  }, [0, 1, 2].map((i) => h('span', {
-    class: `risk-meter-seg${i <= levelIndex ? ' filled' : ''}`,
-    'aria-hidden': 'true',
-  })));
-
-  const risk = h('div', { class: 'risk-row' }, [
-    h('span', { class: `risk-tag ${d.riskLevel}` }, RISK_LEVEL_LABEL[d.riskLevel] ?? d.riskLevel),
-    h('span', { class: 'risk-priority' }, `筛查优先级：${PRIORITY_LABEL[d.screeningPriority] ?? d.screeningPriority}`),
-  ]);
 
   const riskFactors = d.riskFactors.length
     ? h('ul', { class: 'factor-list' }, d.riskFactors.map((f) => renderFactorItem(f, mainExpls.get(f.id))))
@@ -358,10 +371,9 @@ function renderDiseaseCard(d) {
     : h('p', { class: 'evidence' }, '未识别显著保护因素。');
 
   return h('article', { class: `disease-card risk-${d.riskLevel}` }, [
-    h('div', { class: 'disease-card-head' }, [
-      h('h3', {}, DISEASE_LABEL[d.diseaseId] ?? d.diseaseId),
-      meter,
-    ]),
+    h('h3', { class: 'disease-card-name' }, DISEASE_LABEL[d.diseaseId] ?? d.diseaseId),
+    renderConclusionBar(d.riskLevel, d.screeningPriority),
+    renderMeterRow(d.riskLevel),
     d.evidenceLevel === 'limited'
       ? h('div', { class: 'evidence-warning' }, [
           '证据有限：可用数据较少，结果仅供演示参考。',
@@ -372,7 +384,6 @@ function renderDiseaseCard(d) {
             : null,
         ])
       : null,
-    risk,
     expl.riskConclusion ? h('p', { class: 'risk-conclusion' }, expl.riskConclusion) : null,
     h('h4', {}, '主要风险因素'),
     riskFactors,
