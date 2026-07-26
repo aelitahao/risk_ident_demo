@@ -33,6 +33,23 @@ test('profileToPredictionInput maps Chinese gender/smoking to English enums', ()
   assert.deepEqual(input.healthHistory.knownDiseases, ['甲状腺疾病']);
 });
 
+test('profileToPredictionInput formats structured known disease records', () => {
+  const input = profileToPredictionInput({
+    user_id: 'US-X',
+    health_history: {
+      known_diseases_and_comorbidities: [
+        { disease: '甲状腺疾病', status: '当前仍存在', diagnosis_age: 35 },
+        { disease: '癌症或恶性肿瘤史', status: '既往确诊' },
+      ],
+    },
+  });
+
+  assert.deepEqual(input.healthHistory.knownDiseases, [
+    '甲状腺疾病（当前仍存在，35 岁确诊）',
+    '癌症或恶性肿瘤史（既往确诊）',
+  ]);
+});
+
 test('stripLeakageFields removes bp/hba1c/fasting_glucose keys', () => {
   const input = {
     total_cholesterol_mg_dl: 180,

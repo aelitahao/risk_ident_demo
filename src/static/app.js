@@ -114,7 +114,57 @@ function fmtProfile(v, suffix = '') {
 }
 
 function pair(label, value) {
-  return [h('dt', {}, label), h('dd', {}, value ?? '未记录')];
+  return [h('div', { class: 'kv-pair' }, [
+    h('dt', {}, label),
+    h('dd', {}, value ?? '未记录'),
+  ])];
+}
+
+const DETAIL_KEY_LABEL = {
+  close_relative_heart_attack: '近亲心脏病史',
+  pulse_rhythm: '脉搏节律',
+  pulse_rate_bpm: '脉率',
+  total_cholesterol_mg_dl: '总胆固醇',
+  hdl_cholesterol_mg_dl: '高密度脂蛋白胆固醇',
+  ldl_cholesterol_mg_dl: '低密度脂蛋白胆固醇',
+  triglycerides_mg_dl: '甘油三酯',
+};
+
+function readableKey(key) {
+  return DETAIL_KEY_LABEL[key] ?? key.replaceAll('_', ' ');
+}
+
+function subvalueList(items) {
+  const values = items.filter((item) => item != null && String(item).trim());
+  if (!values.length) return '未采集';
+  return h('ul', { class: 'subvalue-list' }, values.map((item) => {
+    if (item instanceof Node) return h('li', {}, item);
+    const text = String(item).trim();
+    const match = text.match(/^([^:：]{1,30})[:：]\s*(.+)$/);
+    return h('li', {}, match
+      ? [h('span', { class: 'subvalue-label' }, match[1]), h('span', {}, match[2])]
+      : text);
+  }));
+}
+
+function structuredText(value) {
+  if (value == null || value === '') return '未采集';
+  const items = String(value).split(/[；;\n]+/).map((item) => item.trim()).filter(Boolean);
+  return items.length > 1 || /[:：]/.test(items[0] ?? '') ? subvalueList(items) : value;
+}
+
+function structuredArray(values, emptyText = '未报告') {
+  return Array.isArray(values) && values.length ? subvalueList(values) : emptyText;
+}
+
+function structuredObject(value) {
+  if (!value || typeof value !== 'object') return '未采集';
+  const items = Object.entries(value).map(([key, itemValue]) =>
+    h('span', { class: 'subvalue-row' }, [
+      h('span', { class: 'subvalue-label' }, readableKey(key)),
+      h('span', {}, String(itemValue)),
+    ]));
+  return items.length ? subvalueList(items) : '未采集';
 }
 
 const ENTRIES = [
@@ -122,21 +172,17 @@ const ENTRIES = [
     id: 'database',
     href: '#/users',
     icon: 'table-cells',
-    eyebrow: '已有档案',
-    title: '数据库档案筛查',
-    description: '从演示库的匿名用户档案中挑一位，先查看完整健康画像，再生成风险结果。',
-    points: ['字段已预填，无需手工录入', '可对照原始画像核查风险因素', '适合演示完整数据链路'],
-    cta: '浏览用户档案',
+    title: '档案库',
+    meta: '已有数据 · 24',
+    cta: '进入档案库',
   },
   {
     id: 'questionnaire',
     href: '#/questionnaire',
     icon: 'pencil-square',
-    eyebrow: '匿名录入',
-    title: '匿名问卷筛查',
-    description: '现场填写一份健康问卷，提交后即时返回糖尿病与高血压风险评估，数据不入库。',
-    points: ['BMI 由身高体重自动推导', '字段级校验与错误提示', '适合体验真实录入流程'],
-    cta: '填写健康问卷',
+    title: '匿名问卷',
+    meta: '临时录入 · 不保存',
+    cta: '填写问卷',
   },
 ];
 
@@ -144,174 +190,276 @@ function backLink(href = '#/', text = '返回入口') {
   return h('div', {}, h('a', { class: 'back-link', href }, [icon('arrow-left'), text]));
 }
 
+function previewRisk(label) {
+  return h('div', { class: 'preview-risk' }, [
+    h('div', {}, [h('span', {}, label), h('strong', { class: 'risk-low-text' }, '低风险')]),
+    h('div', { class: 'preview-risk-track', role: 'img', 'aria-label': `${label}低风险` }, [
+      h('span', { class: 'low active' }),
+      h('span', { class: 'medium' }),
+      h('span', { class: 'high' }),
+    ]),
+  ]);
+}
+
+function healthDataPreview() {
+  return h('section', { class: 'health-preview', 'aria-label': '健康画像结果预览' }, [
+    h('header', { class: 'preview-header' }, [
+      h('div', {}, [h('span', {}, '健康画像'), h('strong', {}, 'US-001')]),
+      h('span', { class: 'record-status static complete' }, '基本完整'),
+    ]),
+    h('div', { class: 'preview-metrics' }, [
+      h('div', {}, [h('span', {}, 'BMI'), h('strong', {}, '23.5')]),
+      h('div', {}, [h('span', {}, '腰围'), h('strong', {}, '81.4 cm')]),
+      h('div', {}, [h('span', {}, '每周运动'), h('strong', {}, '2 次')]),
+    ]),
+    h('div', { class: 'preview-risks' }, [
+      previewRisk('糖尿病风险'),
+      previewRisk('高血压风险'),
+    ]),
+  ]);
+}
+
+function modelNote() {
+  return h('details', { class: 'model-note' }, [
+    h('summary', {}, '模型说明 ⓘ'),
+    h('div', {}, [
+      h('p', {}, '模型仅使用年龄、体型、生活方式与健康史等非目标字段。'),
+      h('p', {}, '不采集血压、HbA1c 或空腹血糖；结果用于健康管理演示，不构成临床诊断。'),
+    ]),
+  ]);
+}
+
 function homeRoute() {
-  const cards = ENTRIES.map((item) => h('a', { class: 'entry-card', href: item.href }, [
+  const cards = ENTRIES.map((item) => h('a', { class: `entry-card entry-${item.id}`, href: item.href }, [
     h('span', { class: 'entry-icon', 'aria-hidden': 'true' }, icon(item.icon)),
-    h('small', { class: 'entry-eyebrow' }, item.eyebrow),
-    h('h2', {}, item.title),
-    h('p', { class: 'entry-desc' }, item.description),
-    h('ul', { class: 'entry-points' }, item.points.map((p) => h('li', {}, p))),
+    h('div', {}, [
+      h('h2', {}, item.title),
+      h('span', { class: 'entry-meta' }, item.meta),
+    ]),
     h('span', { class: 'entry-cta' }, [item.cta, icon('arrow-right')]),
   ]));
 
   render(h('div', { class: 'home' }, [
-    h('div', { class: 'page-heading home-heading' }, [
-      h('h1', {}, '慢病风险筛查'),
-      h('p', { class: 'subtitle' }, '选择一个入口开始：两种入口共用同一套预测服务，输出结构完全一致，区别只在数据从哪里来。'),
+    h('div', { class: 'home-main' }, [
+      h('div', { class: 'home-content' }, [
+        h('div', { class: 'page-heading home-heading' }, [
+          h('h1', {}, '慢性病风险分析'),
+          h('p', { class: 'subtitle' }, '糖尿病与高血压风险评估'),
+        ]),
+        h('div', { class: 'entry-grid' }, cards),
+        modelNote(),
+      ]),
+      healthDataPreview(),
     ]),
-    h('div', { class: 'entry-grid' }, cards),
-    h('p', { class: 'home-note' }, '两种入口都只使用年龄、体型、生活方式与健康史等非目标字段，不采集血压、HbA1c 或空腹血糖，结果仅供健康管理演示。'),
+    h('ol', { class: 'process-flow', 'aria-label': '分析流程' }, [
+      '选择数据来源', '查看健康画像', '运行风险预测', '查看因素解释',
+    ].map((step) => h('li', {}, step))),
   ]));
 }
 
-function usersRoute() {
-  const state = { q: '', total: 0, users: [] };
+function archiveRoute(initialUserId = null) {
+  const state = { q: '', users: [], selectedId: initialUserId, detailRequest: 0 };
 
   const searchInput = h('input', {
     type: 'search',
-    placeholder: '按用户 ID 搜索，例：US-01',
+    placeholder: '搜索用户 ID',
     'aria-label': '按用户 ID 搜索',
   });
-  const countEl = h('span', { class: 'count' }, '');
-  const tbody = h('tbody');
-
-  const table = h('table', { class: 'user-table' }, [
-    h('thead', {}, h('tr', {}, [
-      h('th', {}, '用户 ID'),
-      h('th', {}, '年龄'),
-      h('th', {}, '性别'),
-      h('th', {}, 'BMI'),
-      h('th', {}, '腰围'),
-      h('th', {}, '生活方式摘要'),
-      h('th', {}, '数据状态'),
-    ])),
-    tbody,
+  const list = h('div', { class: 'record-list', role: 'list' });
+  const countEl = h('span', { class: 'count' });
+  const detailSlot = h('section', { class: 'workspace-detail', 'aria-live': 'polite' }, [
+    h('div', { class: 'empty' }, '选择用户查看健康画像'),
   ]);
-
-  const toolbar = h('div', { class: 'toolbar' }, [
-    h('div', { class: 'search-wrap' }, [icon('magnifying-glass', { class: 'search-icon' }), searchInput]),
-    countEl,
-  ]);
-  const container = h('div', {}, [
-    backLink(),
-    h('div', { class: 'page-heading' }, [
-      h('h1', {}, '数据库档案筛查'),
-      h('p', { class: 'subtitle' }, '选择一份已有健康档案，查看画像详情并生成风险结果。'),
+  const container = h('div', { class: 'archive-page' }, [
+    h('div', { class: 'page-heading archive-heading' }, [
+      h('div', {}, [
+        h('h1', {}, '档案库'),
+        h('p', { class: 'subtitle' }, '浏览健康画像并运行风险预测'),
+      ]),
+      h('a', { class: 'secondary-action', href: '#/' }, '退出档案库'),
     ]),
-    toolbar,
-    h('div', { class: 'table-shell' }, table),
+    h('div', { class: 'archive-workspace' }, [
+      h('aside', { class: 'record-sidebar', 'aria-label': '用户档案' }, [
+        h('div', { class: 'sidebar-header' }, [
+          h('strong', {}, '用户'),
+          countEl,
+        ]),
+        h('div', { class: 'search-wrap' }, [icon('magnifying-glass', { class: 'search-icon' }), searchInput]),
+        list,
+      ]),
+      detailSlot,
+    ]),
   ]);
 
-  function renderSkeletonRows() {
-    tbody.replaceChildren(...Array.from({ length: 6 }, () => h('tr', { 'aria-hidden': 'true' },
-      Array.from({ length: 7 }, () => h('td', {}, h('span', { class: 'sk-line' }))),
-    )));
-  }
-
-  function renderRows() {
-    tbody.replaceChildren();
+  function renderList() {
+    list.replaceChildren();
     if (state.users.length === 0) {
-      tbody.append(h('tr', {}, h('td', { colspan: '7' }, h('div', { class: 'empty' }, '未匹配用户'))));
+      list.append(h('div', { class: 'empty compact' }, '没有匹配的用户'));
       return;
     }
     for (const u of state.users) {
-      const goToDetail = () => { location.hash = `#/users/${u.userId}`; };
-      const row = h('tr', {
-        tabindex: '0',
-        role: 'link',
+      const select = () => {
+        if (state.selectedId === u.userId) return;
+        state.selectedId = u.userId;
+        history.replaceState(null, '', `#/users/${u.userId}`);
+        renderList();
+        loadDetail(u.userId);
+      };
+      list.append(h('button', {
+        class: `record-row${u.userId === state.selectedId ? ' selected' : ''}`,
+        type: 'button',
+        role: 'listitem',
         'aria-label': `查看 ${u.userId} 的详情`,
-        onclick: goToDetail,
-        onkeydown: (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            goToDetail();
-          }
-        },
+        onclick: select,
       }, [
-        h('td', { 'data-label': '用户 ID' }, u.userId),
-        h('td', { 'data-label': '年龄' }, fmt(u.ageYears)),
-        h('td', { 'data-label': '性别' }, GENDER_LABEL[u.gender] ?? '—'),
-        h('td', { 'data-label': 'BMI' }, fmt(u.bmi)),
-        h('td', { 'data-label': '腰围' }, fmt(u.waistCm, ' cm')),
-        h('td', { 'data-label': '生活方式摘要' }, u.lifestyleSummary ?? '—'),
-        h('td', { 'data-label': '数据状态' }, h('span', { class: `status-badge ${u.dataStatus}` }, DATA_STATUS_LABEL[u.dataStatus] ?? u.dataStatus)),
-      ]);
-      tbody.append(row);
+        h('span', { class: 'record-id' }, u.userId),
+        h('span', { class: 'record-meta' }, `${fmt(u.ageYears, ' 岁')} · ${GENDER_LABEL[u.gender] ?? '—'} · BMI ${fmt(u.bmi)}`),
+        h('span', { class: `record-status ${u.dataStatus}` },
+          DATA_STATUS_LABEL[u.dataStatus] ?? u.dataStatus),
+      ]));
     }
   }
 
-  let pending = 0;
-  async function load(q) {
-    const my = ++pending;
-    const params = q ? `?q=${encodeURIComponent(q)}` : '';
-    const data = await api(`/api/v1/users${params}`);
-    if (my !== pending) return;
-    state.total = data.total;
-    state.users = data.users;
-    countEl.textContent = `共 ${state.total} 名用户`;
-    renderRows();
+  async function loadDetail(userId) {
+    const request = ++state.detailRequest;
+    detailSlot.replaceChildren(...profileSkeleton());
+    try {
+      const detail = await api(`/api/v1/users/${encodeURIComponent(userId)}`);
+      if (request !== state.detailRequest) return;
+      let hasResult = false;
+      const resultSlot = h('div', { class: 'result-slot' }, h('div', { class: 'result-empty' }, '尚未运行风险预测'));
+      const predictBtn = h('button', { class: 'primary', type: 'button' }, '运行风险预测');
+      predictBtn.addEventListener('click', async () => {
+        predictBtn.disabled = true;
+        predictBtn.textContent = '正在分析…';
+        resultSlot.replaceChildren(resultSkeleton());
+        try {
+          const result = await api(`/api/v1/users/${encodeURIComponent(userId)}/prediction`, { method: 'POST', body: {} });
+          hasResult = true;
+          resultSlot.replaceChildren(renderResult(result));
+        } catch (e) {
+          resultSlot.replaceChildren(h('div', { class: 'error-box' }, `预测失败：${e.message}`));
+        } finally {
+          predictBtn.disabled = false;
+          predictBtn.textContent = hasResult ? '重新运行' : '运行风险预测';
+        }
+      });
+      const profileSections = renderProfileSections(detail.profile, userId, detail.dataStatus, predictBtn);
+      detailSlot.replaceChildren(profileSections[0], resultSlot, ...profileSections.slice(1));
+    } catch (e) {
+      if (request === state.detailRequest) detailSlot.replaceChildren(h('div', { class: 'error-box' }, `加载失败：${e.message}`));
+    }
   }
 
-  const DEBOUNCE_MS = 250;
   let debounceTimer = null;
   searchInput.addEventListener('input', (e) => {
     state.q = e.target.value;
     clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
-      load(state.q).catch(showError);
-    }, DEBOUNCE_MS);
+    debounceTimer = setTimeout(async () => {
+      try {
+        const data = await api(`/api/v1/users${state.q ? `?q=${encodeURIComponent(state.q)}` : ''}`);
+        state.users = data.users;
+        countEl.textContent = String(data.total);
+        renderList();
+      } catch (e) {
+        list.replaceChildren(h('div', { class: 'error-box' }, `加载失败：${e.message}`));
+      }
+    }, 250);
   });
 
   render(container);
-  renderSkeletonRows();
-  load('').catch(showError);
+  list.replaceChildren(...Array.from({ length: 8 }, () => h('span', { class: 'sk-line list-skeleton' })));
+  api('/api/v1/users').then((data) => {
+    state.users = data.users;
+    countEl.textContent = String(data.total);
+    if (!state.selectedId && state.users.length) {
+      state.selectedId = state.users[0].userId;
+      history.replaceState(null, '', `#/users/${state.selectedId}`);
+    }
+    renderList();
+    if (state.selectedId) loadDetail(state.selectedId);
+  }).catch((e) => list.replaceChildren(h('div', { class: 'error-box' }, `加载失败：${e.message}`)));
 }
 
-function renderProfileSections(profile, rawProfile) {
+function usersRoute() { archiveRoute(); }
+
+function metricRange(label, value, suffix, min, max, statusText) {
+  const numeric = Number(value);
+  const percent = Number.isFinite(numeric)
+    ? Math.max(0, Math.min(100, ((numeric - min) / (max - min)) * 100))
+    : 0;
+  return h('div', { class: 'overview-metric' }, [
+    h('div', { class: 'metric-heading' }, [
+      h('span', {}, label),
+      h('strong', {}, fmt(value, suffix)),
+    ]),
+    h('div', { class: 'metric-range', role: 'img', 'aria-label': `${label} ${fmt(value, suffix)}` }, [
+      h('span', { class: 'metric-zone normal' }),
+      h('span', { class: 'metric-zone elevated' }),
+      h('span', { class: 'metric-marker', style: `left:${percent}%` }),
+    ]),
+    h('small', {}, statusText),
+  ]);
+}
+
+function renderProfileSections(profile, userId, dataStatus, action) {
   const basic = profile.basicInfo;
   const life = profile.lifestyle;
   const hh = profile.healthHistory;
   const gi = hh.generalIndicators ?? {};
+  const bmiStatus = basic.bmi == null ? '未记录' : basic.bmi < 24 ? '常用正常范围' : basic.bmi < 28 ? '偏高' : '较高';
+  const waistLimit = basic.gender === 'female' ? 85 : 90;
+  const waistStatus = basic.waistCm == null ? '未记录' : basic.waistCm < waistLimit ? '低于常用界值' : '达到或超过常用界值';
 
-  const basicSection = h('section', { class: 'section' }, [
-    h('h2', {}, '基本信息'),
-    h('dl', { class: 'kv-grid' }, [
-      ...pair('年龄', fmt(basic.ageYears, ' 岁')),
-      ...pair('性别', GENDER_LABEL[basic.gender] ?? '—'),
-      ...pair('身高', fmt(basic.heightCm, ' cm')),
-      ...pair('体重', fmt(basic.weightKg, ' kg')),
-      ...pair('BMI', fmt(basic.bmi)),
-      ...pair('腰围', fmt(basic.waistCm, ' cm')),
+  const overview = h('section', { class: 'user-overview' }, [
+    h('div', { class: 'overview-header' }, [
+      h('div', { class: 'avatar', 'aria-hidden': 'true' }, userId.replace(/\D/g, '').slice(-2) || 'U'),
+      h('div', { class: 'overview-identity' }, [
+        h('span', {}, '用户档案'),
+        h('h2', {}, userId),
+        h('div', { class: 'overview-tags' }, [
+          h('span', { class: `record-status static ${dataStatus}` }, DATA_STATUS_LABEL[dataStatus] ?? dataStatus),
+          h('span', {}, `${fmt(basic.ageYears, ' 岁')} · ${GENDER_LABEL[basic.gender] ?? '—'}`),
+        ]),
+      ]),
+      h('div', { class: 'overview-action' }, action),
+    ]),
+    h('div', { class: 'overview-body' }, [
+      h('dl', { class: 'overview-facts' }, [
+        ...pair('身高', fmt(basic.heightCm, ' cm')),
+        ...pair('体重', fmt(basic.weightKg, ' kg')),
+      ]),
+      h('div', { class: 'overview-metrics' }, [
+        metricRange('BMI', basic.bmi, '', 10, 40, bmiStatus),
+        metricRange('腰围', basic.waistCm, ' cm', 50, 130, waistStatus),
+      ]),
     ]),
   ]);
 
-  const lifestyleSection = h('section', { class: 'section' }, [
-    h('h2', {}, '生活方式'),
+  const lifestyleSection = h('details', { class: 'section detail-section' }, [
+    h('summary', {}, '生活方式'),
     h('dl', { class: 'kv-grid' }, [
       ...pair('吸烟状态', SMOKING_LABEL[life.smokingStatus] ?? '—'),
-      ...pair('饮酒摘要', life.alcoholSummary ?? '—'),
-      ...pair('活动摘要', life.physicalActivitySummary ?? '—'),
+      ...pair('饮酒摘要', structuredText(life.alcoholSummary)),
+      ...pair('活动摘要', structuredText(life.physicalActivitySummary)),
       ...pair('久坐（分钟/天）', fmt(life.sedentaryMinutesPerDay)),
       ...pair('工作日睡眠', fmt(life.weekdaySleepHours, ' 小时')),
       ...pair('周末睡眠', fmt(life.weekendSleepHours, ' 小时')),
-      ...pair('单日膳食', life.dietaryRecord?.summary ?? '未采集'),
+      ...pair('单日膳食', structuredText(life.dietaryRecord?.summary)),
     ]),
   ]);
 
-  const historySection = h('section', { class: 'section' }, [
-    h('h2', {}, '健康史'),
+  const historySection = h('details', { class: 'section detail-section' }, [
+    h('summary', {}, '健康史'),
     h('dl', { class: 'kv-grid' }, [
-      ...pair('已知疾病', hh.knownDiseases.length ? hh.knownDiseases.join('、') : '未报告'),
-      ...pair('家族史', Object.entries(hh.familyHistory).map(([k, v]) => `${k}: ${v}`).join('；') || '未采集'),
-      ...pair('当前症状', hh.currentSymptoms.length ? hh.currentSymptoms.join('、') : '未报告'),
-      ...pair(
-        '一般指标',
-        Object.entries(gi).map(([k, v]) => `${k}: ${v}`).join('；') || '未采集',
-      ),
+      ...pair('已知疾病', structuredArray(hh.knownDiseases)),
+      ...pair('家族史', structuredObject(hh.familyHistory)),
+      ...pair('当前症状', structuredArray(hh.currentSymptoms)),
+      ...pair('一般指标', structuredObject(gi)),
     ]),
   ]);
 
-  return [basicSection, lifestyleSection, historySection];
+  return [overview, lifestyleSection, historySection];
 }
 
 function explanationLookup(entries) {
@@ -350,7 +498,7 @@ function renderMeterRow(riskLevel) {
     h('span', { class: 'risk-meter-label' }, '风险等级'),
     h('div', { class: 'risk-meter', 'aria-hidden': 'true' },
       [0, 1, 2].map((i) => h('span', {
-        class: `risk-meter-seg${i <= levelIndex ? ' filled' : ''}`,
+        class: `risk-meter-seg level-${i}${i === levelIndex ? ' active' : ''}`,
       })),
     ),
     h('span', { class: 'risk-meter-ordinal' }, ordinal),
@@ -402,51 +550,7 @@ function renderResult(result) {
 }
 
 async function userDetailRoute(userId) {
-  const container = h('div', {}, [
-    h('div', {}, h('a', { class: 'back-link', href: '#/users' }, [icon('arrow-left'), '返回列表'])),
-    h('div', { class: 'page-heading' }, [
-      h('h1', {}, `用户 ${userId}`),
-      h('p', { class: 'subtitle' }, '查看健康画像并选择评估模式生成风险筛查结果。'),
-    ]),
-    h('div', { id: 'profile-slot' }, profileSkeleton()),
-    h('div', { class: 'actions', id: 'action-slot' }),
-    h('div', { id: 'result-slot' }),
-  ]);
-  render(container);
-
-  const profileSlot = container.querySelector('#profile-slot');
-  const actionSlot = container.querySelector('#action-slot');
-  const resultSlot = container.querySelector('#result-slot');
-
-  let hasResult = false;
-
-  async function runPrediction() {
-    resultSlot.replaceChildren(resultSkeleton());
-    try {
-      const result = await api(`/api/v1/users/${encodeURIComponent(userId)}/prediction`, {
-        method: 'POST',
-        body: {},
-      });
-      hasResult = true;
-      resultSlot.replaceChildren(renderResult(result));
-    } catch (e) {
-      resultSlot.replaceChildren(h('div', { class: 'error-box' }, `预测失败：${e.message}`));
-    }
-  }
-
-  function rebuildActions() {
-    const btn = h('button', { class: 'primary' }, hasResult ? '重新预测' : '风险预测');
-    btn.addEventListener('click', () => runPrediction());
-    actionSlot.replaceChildren(btn);
-  }
-
-  try {
-    const detail = await api(`/api/v1/users/${encodeURIComponent(userId)}`);
-    profileSlot.replaceChildren(...renderProfileSections(detail.profile));
-    rebuildActions();
-  } catch (e) {
-    profileSlot.replaceChildren(h('div', { class: 'error-box' }, `加载失败：${e.message}`));
-  }
+  archiveRoute(userId);
 }
 
 function showError(e) {
@@ -471,14 +575,6 @@ function nullable(s) {
   return t ? t : null;
 }
 
-function csvArray(s) {
-  if (s == null) return [];
-  return String(s)
-    .split(/[,，、\n]/)
-    .map((x) => x.trim())
-    .filter(Boolean);
-}
-
 function questionnaireRoute() {
   const fields = new Map();
 
@@ -501,14 +597,68 @@ function questionnaireRoute() {
     return h('div', { class: 'form-field' }, [h('label', {}, label), sel, err]);
   }
 
-  function textareaField(path, label, hint = null) {
-    const ta = h('textarea', { name: path, rows: 2 });
-    fields.set(path, ta);
+  function repeatableSelectField(path, label, options, addText = '添加一项') {
+    const rows = h('div', { class: 'repeatable-rows' });
+    const wrapper = h('div', { class: 'form-field repeatable-field' });
     const err = h('div', { class: 'field-error', 'data-for': path });
-    const children = [h('label', {}, label), ta];
-    if (hint) children.push(h('div', { class: 'field-hint' }, hint));
-    children.push(err);
-    return h('div', { class: 'form-field' }, children);
+    const addRow = () => {
+      const select = h('select', { 'aria-label': label }, [
+        h('option', { value: '' }, '请选择'),
+        ...options.map(([value, text]) => h('option', { value }, text)),
+      ]);
+      const remove = h('button', { class: 'remove-row', type: 'button', 'aria-label': `删除${label}` }, '移除');
+      const row = h('div', { class: 'repeatable-row' }, [select, remove]);
+      remove.addEventListener('click', () => row.remove());
+      rows.append(row);
+    };
+    const add = h('button', { class: 'add-row', type: 'button' }, `＋ ${addText}`);
+    add.addEventListener('click', addRow);
+    wrapper.append(h('label', {}, label), rows, add, err);
+    fields.set(path, wrapper);
+    addRow();
+    return {
+      element: wrapper,
+      values: () => [...rows.querySelectorAll('select')].map((el) => el.value).filter(Boolean),
+    };
+  }
+
+  function familyHistoryField() {
+    const path = 'healthHistory.familyHistory';
+    const rows = h('div', { class: 'repeatable-rows' });
+    const wrapper = h('div', { class: 'form-field repeatable-field' });
+    const err = h('div', { class: 'field-error', 'data-for': path });
+    const relatives = [['父亲', '父亲'], ['母亲', '母亲'], ['兄弟姐妹', '兄弟姐妹'], ['祖父母', '祖父母'], ['其他近亲', '其他近亲']];
+    const diseases = [['糖尿病', '糖尿病'], ['高血压', '高血压'], ['冠心病', '冠心病'], ['脑卒中', '脑卒中'], ['其他慢性病', '其他慢性病']];
+    const addRow = () => {
+      const relative = h('select', { 'aria-label': '亲属关系' }, [
+        h('option', { value: '' }, '选择亲属'),
+        ...relatives.map(([v, t]) => h('option', { value: v }, t)),
+      ]);
+      const disease = h('select', { 'aria-label': '家族疾病' }, [
+        h('option', { value: '' }, '选择疾病'),
+        ...diseases.map(([v, t]) => h('option', { value: v }, t)),
+      ]);
+      const remove = h('button', { class: 'remove-row', type: 'button', 'aria-label': '删除家族史' }, '移除');
+      const row = h('div', { class: 'repeatable-row family-row' }, [relative, disease, remove]);
+      remove.addEventListener('click', () => row.remove());
+      rows.append(row);
+    };
+    const add = h('button', { class: 'add-row', type: 'button' }, '＋ 添加家族史');
+    add.addEventListener('click', addRow);
+    wrapper.append(h('label', {}, '家族史'), rows, add, err);
+    fields.set(path, wrapper);
+    addRow();
+    return {
+      element: wrapper,
+      value: () => {
+        const result = {};
+        for (const row of rows.querySelectorAll('.family-row')) {
+          const [relative, disease] = row.querySelectorAll('select');
+          if (relative.value && disease.value) result[`${relative.value}_${disease.value}`] = '是';
+        }
+        return result;
+      },
+    };
   }
 
   const basicSection = h('section', { class: 'section form-section' }, [
@@ -531,21 +681,59 @@ function questionnaireRoute() {
       selectField('lifestyle.smokingStatus', '吸烟状态', [
         ['never', '从未吸烟'], ['former', '既往吸烟'], ['current', '当前吸烟'],
       ]),
-      field('lifestyle.alcoholSummary', '饮酒摘要', { type: 'text', maxlength: '200' }),
-      field('lifestyle.physicalActivitySummary', '活动摘要', { type: 'text', maxlength: '200' }),
+      selectField('lifestyle.alcoholSummary', '饮酒频率', [
+        ['过去一年未饮酒', '过去一年未饮酒'],
+        ['每月少于 1 次', '每月少于 1 次'],
+        ['每月 1–3 次', '每月 1–3 次'],
+        ['每周 1–2 次', '每周 1–2 次'],
+        ['每周 3 次及以上', '每周 3 次及以上'],
+      ]),
+      selectField('lifestyle.physicalActivitySummary', '日常活动水平', [
+        ['未进行规律运动', '未进行规律运动'],
+        ['以步行等轻度活动为主', '轻度活动'],
+        ['每周进行中等强度活动', '中等强度活动'],
+        ['每周进行高强度活动', '高强度活动'],
+      ]),
       field('lifestyle.sedentaryMinutesPerDay', '久坐（分钟/天）', { type: 'number', min: '0', max: '1440' }),
       field('lifestyle.weekdaySleepHours', '工作日睡眠（小时）', { type: 'number', min: '0', max: '24', step: '0.1' }),
       field('lifestyle.weekendSleepHours', '周末睡眠（小时）', { type: 'number', min: '0', max: '24', step: '0.1' }),
     ]),
-    textareaField('lifestyle.dietaryRecord', '单日膳食摘要', '24 小时膳食回顾，自由文本'),
+    h('div', { class: 'form-subsection' }, [
+      h('h3', {}, '单日膳食'),
+      h('div', { class: 'form-grid' }, [
+        selectField('lifestyle.dietSalt', '口味咸度', [
+          ['清淡', '清淡'], ['一般', '一般'], ['高盐', '偏咸 / 高盐'],
+        ]),
+        selectField('lifestyle.dietProduce', '蔬菜水果摄入', [
+          ['不足 2 份', '不足 2 份'], ['2–4 份', '2–4 份'], ['5 份及以上', '5 份及以上'],
+        ]),
+        selectField('lifestyle.sugaryDrinks', '含糖饮料', [
+          ['不饮用', '不饮用'], ['偶尔饮用', '偶尔饮用'], ['每天饮用', '每天饮用'],
+        ]),
+      ]),
+    ]),
   ]);
+
+  const knownDiseasesField = repeatableSelectField('healthHistory.knownDiseases', '已知疾病', [
+    ['糖尿病', '糖尿病'], ['高血压', '高血压'], ['高脂血症', '高脂血症'],
+    ['冠心病', '冠心病'], ['脑卒中', '脑卒中'], ['甲状腺疾病', '甲状腺疾病'],
+    ['慢性肾病', '慢性肾病'], ['其他慢性病', '其他慢性病'],
+  ], '疾病');
+  const familyField = familyHistoryField();
+  const symptomsField = repeatableSelectField('healthHistory.currentSymptoms', '当前症状', [
+    ['无明显症状', '无明显症状'], ['口渴或多饮', '口渴或多饮'], ['尿频', '尿频'],
+    ['体重异常变化', '体重异常变化'], ['头晕或头痛', '头晕或头痛'],
+    ['胸闷或心悸', '胸闷或心悸'], ['活动后气短', '活动后气短'], ['其他症状', '其他症状'],
+  ], '症状');
 
   const historySection = h('section', { class: 'section form-section' }, [
     h('h2', {}, '健康史'),
     h('p', { class: 'field-hint' }, '本表单不采集血压、HbA1c 或空腹血糖等目标信息，避免评估被污染。'),
-    textareaField('healthHistory.knownDiseases', '已知疾病', '英文/中文逗号或换行分隔，例：hyperlipidemia, asthma'),
-    textareaField('healthHistory.familyHistory', '家族史', '自由文本描述，例：母亲糖尿病；父亲高血压'),
-    textareaField('healthHistory.currentSymptoms', '当前症状', '英文/中文逗号或换行分隔'),
+    h('div', { class: 'structured-form-grid' }, [
+      knownDiseasesField.element,
+      familyField.element,
+      symptomsField.element,
+    ]),
   ]);
 
   const heightInput = fields.get('basicInfo.heightCm');
@@ -576,8 +764,21 @@ function questionnaireRoute() {
 
   function collectInput() {
     const get = (p) => fields.get(p)?.value ?? '';
-    const dietary = nullable(get('lifestyle.dietaryRecord'));
-    const family = nullable(get('healthHistory.familyHistory'));
+    const salt = nullable(get('lifestyle.dietSalt'));
+    const produce = nullable(get('lifestyle.dietProduce'));
+    const sugaryDrinks = nullable(get('lifestyle.sugaryDrinks'));
+    const dietaryRecord = salt || produce || sugaryDrinks
+      ? {
+          saltLevel: salt,
+          fruitVegetableServings: produce,
+          sugaryDrinks,
+          summary: [
+            salt ? `口味：${salt}` : null,
+            produce ? `蔬菜水果：${produce}` : null,
+            sugaryDrinks ? `含糖饮料：${sugaryDrinks}` : null,
+          ].filter(Boolean).join('；'),
+        }
+      : null;
     return {
       basicInfo: {
         ageYears: int(get('basicInfo.ageYears')),
@@ -594,12 +795,12 @@ function questionnaireRoute() {
         sedentaryMinutesPerDay: int(get('lifestyle.sedentaryMinutesPerDay')),
         weekdaySleepHours: num(get('lifestyle.weekdaySleepHours')),
         weekendSleepHours: num(get('lifestyle.weekendSleepHours')),
-        dietaryRecord: dietary ? { summary: dietary } : null,
+        dietaryRecord,
       },
       healthHistory: {
-        knownDiseases: csvArray(get('healthHistory.knownDiseases')),
-        familyHistory: family ? { note: family } : {},
-        currentSymptoms: csvArray(get('healthHistory.currentSymptoms')),
+        knownDiseases: knownDiseasesField.values(),
+        familyHistory: familyField.value(),
+        currentSymptoms: symptomsField.values().filter((value) => value !== '无明显症状'),
         generalIndicators: {},
       },
       featureSchemaVersion: '1.0',
@@ -667,7 +868,7 @@ function questionnaireRoute() {
     }
   });
 
-  const container = h('div', {}, [
+  const container = h('div', { class: 'questionnaire-page' }, [
     backLink(),
     h('div', { class: 'page-heading' }, [
       h('h1', {}, '匿名问卷筛查'),

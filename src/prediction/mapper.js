@@ -32,6 +32,19 @@ function mapSmoking(smoking) {
   return null;
 }
 
+function mapKnownDisease(entry) {
+  if (typeof entry === 'string') return entry;
+  if (!entry || typeof entry !== 'object') return null;
+
+  const disease = entry.disease ?? entry.name;
+  if (!disease) return null;
+
+  const details = [];
+  if (entry.status) details.push(entry.status);
+  if (entry.diagnosis_age != null) details.push(`${entry.diagnosis_age} 岁确诊`);
+  return details.length ? `${disease}（${details.join('，')}）` : disease;
+}
+
 export function stripLeakageFields(indicators) {
   if (!indicators || typeof indicators !== 'object') return { cleaned: {}, removed: [] };
   const cleaned = {};
@@ -75,7 +88,7 @@ export function profileToPredictionInput(profile) {
     },
     healthHistory: {
       knownDiseases: Array.isArray(health.known_diseases_and_comorbidities)
-        ? health.known_diseases_and_comorbidities
+        ? health.known_diseases_and_comorbidities.map(mapKnownDisease).filter(Boolean)
         : [],
       familyHistory: health.family_medical_history ?? {},
       currentSymptoms: Array.isArray(health.current_symptoms) ? health.current_symptoms : [],
