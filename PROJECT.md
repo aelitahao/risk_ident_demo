@@ -359,7 +359,7 @@ interface ErrorResponse {
 | 9 | 校验失败、用户不存在、目标信息泄漏返回 5.3 规定的错误码 | `api.error_response.test` |
 | 10 | 回归模型对糖尿病与高血压独立评分 | `prediction.engine_per_disease.test` |
 | 11 | 预测响应包含 `modelVersion` 且不携带内部评分 | `prediction.service_singleton.test`、`prediction.no_internal_score.test` |
-| 12 | `mode` 参数被忽略，预测仍正常返回 | `prediction.mode_validation.test`、`prediction.mode_comprehensive.test` |
+| 12 | LLM 模型输出经 schema 校验；含未知 factorId 时静默丢弃；schema 失败或网络失败后降级为 regression | `prediction.llm_schema.test` |
 
 ## 9. 暂不实现
 
