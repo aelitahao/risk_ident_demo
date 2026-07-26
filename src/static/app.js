@@ -55,6 +55,31 @@ function render(view) {
   app.removeAttribute('aria-busy');
 }
 
+function skeletonLines(count, widths = []) {
+  return Array.from({ length: count }, (_, i) => h('span', {
+    class: 'sk-line',
+    style: widths[i] ? `width:${widths[i]}` : null,
+  }));
+}
+
+function profileSkeleton() {
+  return Array.from({ length: 3 }, () => h('section', { class: 'section skeleton', 'aria-hidden': 'true' }, [
+    h('span', { class: 'sk-line sk-title' }),
+    h('div', { class: 'sk-grid' }, skeletonLines(6, ['70%', '55%', '64%', '48%', '72%', '58%'])),
+  ]));
+}
+
+function resultSkeleton() {
+  return h('section', { class: 'section skeleton', role: 'status', 'aria-label': '预测中' }, [
+    h('span', { class: 'sk-line sk-title' }),
+    h('div', { class: 'sk-cards' }, [0, 1].map(() => h('div', { class: 'sk-card' }, [
+      h('span', { class: 'sk-line', style: 'width:38%;height:17px' }),
+      h('span', { class: 'sk-line', style: 'width:60%' }),
+      ...skeletonLines(3, ['92%', '85%', '70%']),
+    ]))),
+  ]);
+}
+
 function fmt(v, suffix = '') {
   if (v == null || v === '') return '—';
   return suffix ? `${v}${suffix}` : String(v);
@@ -69,39 +94,51 @@ function pair(label, value) {
   return [h('dt', {}, label), h('dd', {}, value ?? '未记录')];
 }
 
-function renderSourceSwitcher(current) {
-  const items = [
-    {
-      id: 'database',
-      href: '#/users',
-      eyebrow: '已有档案',
-      title: '数据库模式',
-      description: '从演示用户档案中选择对象进行风险筛查',
-    },
-    {
-      id: 'questionnaire',
-      href: '#/questionnaire',
-      eyebrow: '匿名录入',
-      title: '问卷模式',
-      description: '填写一份新的健康问卷并即时生成结果',
-    },
-  ];
+const ENTRIES = [
+  {
+    id: 'database',
+    href: '#/users',
+    icon: '▦',
+    eyebrow: '已有档案',
+    title: '数据库档案筛查',
+    description: '从演示库的匿名用户档案中挑一位，先查看完整健康画像，再生成风险结果。',
+    points: ['字段已预填，无需手工录入', '可对照原始画像核查风险因素', '适合演示完整数据链路'],
+    cta: '浏览用户档案',
+  },
+  {
+    id: 'questionnaire',
+    href: '#/questionnaire',
+    icon: '✎',
+    eyebrow: '匿名录入',
+    title: '匿名问卷筛查',
+    description: '现场填写一份健康问卷，提交后即时返回糖尿病与高血压风险评估，数据不入库。',
+    points: ['BMI 由身高体重自动推导', '字段级校验与错误提示', '适合体验真实录入流程'],
+    cta: '填写健康问卷',
+  },
+];
 
-  return h('nav', { class: 'source-switcher', 'aria-label': '数据来源模式' },
-    items.map((item) => h('a', {
-      class: `source-option${item.id === current ? ' active' : ''}`,
-      href: item.href,
-      'aria-current': item.id === current ? 'page' : null,
-    }, [
-      h('span', { class: 'source-icon', 'aria-hidden': 'true' }, item.id === 'database' ? '▦' : '✓'),
-      h('span', { class: 'source-copy' }, [
-        h('small', {}, item.eyebrow),
-        h('strong', {}, item.title),
-        h('span', {}, item.description),
-      ]),
-      h('span', { class: 'source-arrow', 'aria-hidden': 'true' }, '→'),
-    ])),
-  );
+function backLink(href = '#/', text = '← 返回入口') {
+  return h('div', {}, h('a', { class: 'back-link', href }, text));
+}
+
+function homeRoute() {
+  const cards = ENTRIES.map((item) => h('a', { class: 'entry-card', href: item.href }, [
+    h('span', { class: 'entry-icon', 'aria-hidden': 'true' }, item.icon),
+    h('small', { class: 'entry-eyebrow' }, item.eyebrow),
+    h('h2', {}, item.title),
+    h('p', { class: 'entry-desc' }, item.description),
+    h('ul', { class: 'entry-points' }, item.points.map((p) => h('li', {}, p))),
+    h('span', { class: 'entry-cta' }, [item.cta, h('span', { 'aria-hidden': 'true' }, '→')]),
+  ]));
+
+  render(h('div', { class: 'home' }, [
+    h('div', { class: 'page-heading home-heading' }, [
+      h('h1', {}, '慢病风险筛查'),
+      h('p', { class: 'subtitle' }, '选择一个入口开始：两种入口共用同一套预测服务，输出结构完全一致，区别只在数据从哪里来。'),
+    ]),
+    h('div', { class: 'entry-grid' }, cards),
+    h('p', { class: 'home-note' }, '两种入口都只使用年龄、体型、生活方式与健康史等非目标字段，不采集血压、HbA1c 或空腹血糖，结果仅供健康管理演示。'),
+  ]));
 }
 
 function usersRoute() {
@@ -133,20 +170,20 @@ function usersRoute() {
     countEl,
   ]);
   const container = h('div', {}, [
+    backLink(),
     h('div', { class: 'page-heading' }, [
-      h('h1', {}, '慢病风险筛查'),
-      h('p', { class: 'subtitle' }, '选择数据来源，以已有健康档案或匿名问卷发起风险筛查。'),
-    ]),
-    renderSourceSwitcher('database'),
-    h('div', { class: 'content-heading' }, [
-      h('div', {}, [
-        h('h2', {}, '数据库用户'),
-        h('p', {}, '选择一份已有健康档案查看详情'),
-      ]),
+      h('h1', {}, '数据库档案筛查'),
+      h('p', { class: 'subtitle' }, '选择一份已有健康档案，查看画像详情并生成风险结果。'),
     ]),
     toolbar,
     h('div', { class: 'table-shell' }, table),
   ]);
+
+  function renderSkeletonRows() {
+    tbody.replaceChildren(...Array.from({ length: 6 }, () => h('tr', { 'aria-hidden': 'true' },
+      Array.from({ length: 7 }, () => h('td', {}, h('span', { class: 'sk-line' }))),
+    )));
+  }
 
   function renderRows() {
     tbody.replaceChildren();
@@ -186,6 +223,7 @@ function usersRoute() {
   });
 
   render(container);
+  renderSkeletonRows();
   load('').catch(showError);
 }
 
@@ -256,9 +294,19 @@ function renderDiseaseCard(d) {
   const mainExpls = explanationLookup(expl.mainFactorExplanations);
   const protectiveExpls = explanationLookup(expl.protectiveFactorExplanations);
 
-  const risk = h('div', {}, [
+  const levelIndex = { low: 0, medium: 1, high: 2 }[d.riskLevel];
+  const meter = levelIndex == null ? null : h('div', {
+    class: 'risk-meter',
+    role: 'img',
+    'aria-label': `风险等级：${RISK_LEVEL_LABEL[d.riskLevel]}（三级中的第 ${levelIndex + 1} 级）`,
+  }, [0, 1, 2].map((i) => h('span', {
+    class: `risk-meter-seg${i <= levelIndex ? ' filled' : ''}`,
+    'aria-hidden': 'true',
+  })));
+
+  const risk = h('div', { class: 'risk-row' }, [
     h('span', { class: `risk-tag ${d.riskLevel}` }, RISK_LEVEL_LABEL[d.riskLevel] ?? d.riskLevel),
-    h('span', {}, `筛查优先级：${PRIORITY_LABEL[d.screeningPriority] ?? d.screeningPriority}`),
+    h('span', { class: 'risk-priority' }, `筛查优先级：${PRIORITY_LABEL[d.screeningPriority] ?? d.screeningPriority}`),
   ]);
 
   const riskFactors = d.riskFactors.length
@@ -269,8 +317,11 @@ function renderDiseaseCard(d) {
     ? h('ul', { class: 'factor-list' }, d.protectiveFactors.map((f) => renderFactorItem(f, protectiveExpls.get(f.id))))
     : h('p', { class: 'evidence' }, '未识别显著保护因素。');
 
-  return h('article', { class: 'disease-card' }, [
-    h('h3', {}, DISEASE_LABEL[d.diseaseId] ?? d.diseaseId),
+  return h('article', { class: `disease-card risk-${d.riskLevel}` }, [
+    h('div', { class: 'disease-card-head' }, [
+      h('h3', {}, DISEASE_LABEL[d.diseaseId] ?? d.diseaseId),
+      meter,
+    ]),
     d.evidenceLevel === 'limited'
       ? h('div', { class: 'evidence-warning' }, [
           '证据有限：可用数据较少，结果仅供演示参考。',
@@ -331,7 +382,7 @@ async function userDetailRoute(userId) {
       h('h1', {}, `用户 ${userId}`),
       h('p', { class: 'subtitle' }, '查看健康画像并选择评估模式生成风险筛查结果。'),
     ]),
-    h('div', { id: 'profile-slot' }, h('p', { class: 'loading' }, '加载中…')),
+    h('div', { id: 'profile-slot' }, profileSkeleton()),
     h('div', { class: 'actions', id: 'action-slot' }),
     h('div', { id: 'result-slot' }),
   ]);
@@ -344,7 +395,7 @@ async function userDetailRoute(userId) {
   let hasResult = false;
 
   async function runPrediction() {
-    resultSlot.replaceChildren(h('p', { class: 'loading' }, [h('span', { class: 'spinner' }), '预测中…']));
+    resultSlot.replaceChildren(resultSkeleton());
     try {
       const result = await api(`/api/v1/users/${encodeURIComponent(userId)}/prediction`, {
         method: 'POST',
@@ -564,6 +615,7 @@ function questionnaireRoute() {
     submitBtn.disabled = true;
     const prevText = submitBtn.textContent;
     submitBtn.textContent = '预测中…';
+    resultSlot.replaceChildren(resultSkeleton());
     try {
       const input = collectInput();
       const result = await api('/api/v1/predictions', {
@@ -590,16 +642,10 @@ function questionnaireRoute() {
   });
 
   const container = h('div', {}, [
+    backLink(),
     h('div', { class: 'page-heading' }, [
-      h('h1', {}, '慢病风险筛查'),
-      h('p', { class: 'subtitle' }, '选择数据来源，以已有健康档案或匿名问卷发起风险筛查。'),
-    ]),
-    renderSourceSwitcher('questionnaire'),
-    h('div', { class: 'content-heading' }, [
-      h('div', {}, [
-        h('h2', {}, '匿名健康问卷'),
-        h('p', {}, '填写信息以生成糖尿病与高血压风险筛查结果，带 * 项为必填'),
-      ]),
+      h('h1', {}, '匿名问卷筛查'),
+      h('p', { class: 'subtitle' }, '填写信息以生成糖尿病与高血压风险筛查结果，带 * 项为必填。数据不入库。'),
     ]),
     formEl,
   ]);
@@ -607,11 +653,12 @@ function questionnaireRoute() {
 }
 
 function route() {
-  const hash = location.hash || '#/users';
+  const hash = location.hash || '#/';
   const m = hash.match(/^#\/users\/(.+)$/);
   if (m) return userDetailRoute(m[1]);
   if (hash === '#/questionnaire') return questionnaireRoute();
-  return usersRoute();
+  if (hash === '#/users') return usersRoute();
+  return homeRoute();
 }
 
 window.addEventListener('hashchange', route);

@@ -1,5 +1,6 @@
 // LLM-based prediction model via OpenAI-compatible endpoint (ChatAnywhere)
 // Requires: npm install openai
+import { readFileSync } from 'node:fs';
 
 export const MODEL_ID = 'llm_v1';
 
@@ -7,15 +8,7 @@ const LLM_API_KEY  = process.env.LLM_API_KEY  ?? 'sk-9K3HSAtRJVL1swyxyKlOKqEtg3d
 const LLM_BASE_URL = process.env.LLM_BASE_URL ?? 'https://api.chatanywhere.tech/v1';
 const LLM_MODEL    = process.env.LLM_MODEL    ?? 'deepseek-v4-flash';
 
-const SYSTEM_PROMPT = `You are a clinical risk screening assistant.
-Given a structured patient profile, return a JSON object with this exact shape:
-{
-  "diseases": {
-    "diabetes":     { "score": <0.0-1.0>, "riskFactors": [{"id":"...","label":"...","evidence":"..."}], "protectiveFactors": [...] },
-    "hypertension": { "score": <0.0-1.0>, "riskFactors": [...], "protectiveFactors": [...] }
-  }
-}
-score 0.0 = minimal risk, 1.0 = very high risk. Respond with valid JSON only, no prose.`;
+const SYSTEM_PROMPT = readFileSync(new URL('./prompt.txt', import.meta.url), 'utf8');
 
 let _client = null;
 async function getClient() {

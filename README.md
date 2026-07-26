@@ -60,8 +60,10 @@ LLM 相关环境变量（均有默认值，可按需覆盖）：
 | 变量 | 默认值 |
 |---|---|
 | `LLM_API_KEY` | 内置 Key |
-| `LLM_BASE_URL` | `https://api.deepseek.com` |
-| `LLM_MODEL` | `deepseek-v4-pro` |
+| `LLM_BASE_URL` | `https://api.chatanywhere.tech/v1`（OpenAI 兼容端点） |
+| `LLM_MODEL` | `deepseek-v4-flash` |
+
+LLM 模型的提问模板独立存放在 [`src/prediction/models/prompt.txt`](src/prediction/models/prompt.txt)，作为 system prompt 一次性读入。模板规范了角色、输入字段说明、各字段评估指引、评分区间和输出 JSON 结构。调整评分口径、因素粒度或 `id` 命名时改这个文件即可，无需改代码。
 
 ### 运行测试
 
@@ -200,7 +202,8 @@ risk_ident_demo_2/
 │  │  └─ models/
 │  │     ├─ index.js              # 模型工厂（PREDICTION_MODEL 环境变量）
 │  │     ├─ regression.js         # 简单线性打分模型
-│  │     └─ llm.js                # DeepSeek LLM 模型
+│  │     ├─ llm.js                # LLM 模型（OpenAI 兼容端点）
+│  │     └─ prompt.txt            # LLM system prompt 模板
 │  ├─ results/adapter.js          # attachExplanation 工具函数
 │  └─ static/
 └─ test/
