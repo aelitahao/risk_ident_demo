@@ -64,6 +64,8 @@
 
 * { box-sizing: border-box; }
 
+svg { width: 1em; height: 1em; flex-shrink: 0; }
+
 html { min-height: 100%; }
 
 body {
@@ -193,9 +195,10 @@ main { width: min(1184px, 100%); min-height: calc(100vh - 132px); margin: 0 auto
   border-radius: 12px;
   background: var(--accent-soft);
   color: var(--accent);
-  font-size: 21px;
+  font-size: 22px;
   font-weight: 600;
 }
+.entry-icon svg { stroke-width: 1.6; }
 
 .entry-eyebrow { color: var(--muted); font-size: 10px; font-weight: 650; letter-spacing: .08em; }
 .entry-card h2 { margin: 3px 0 0; font-size: 19px; letter-spacing: -.015em; }
@@ -223,8 +226,8 @@ main { width: min(1184px, 100%); min-height: calc(100vh - 132px); margin: 0 auto
   font-size: 13px;
   font-weight: 700;
 }
-.entry-cta span { transition: transform .2s; }
-.entry-card:hover .entry-cta span { transform: translateX(3px); }
+.entry-cta svg { transition: transform .2s; }
+.entry-card:hover .entry-cta svg { transform: translateX(3px); }
 .home-note {
   margin: 24px 0 0;
   padding: 13px 16px;
@@ -258,28 +261,13 @@ main { width: min(1184px, 100%); min-height: calc(100vh - 132px); margin: 0 auto
   margin-bottom: 18px;
 }
 
-.search-wrap { position: relative; flex: 1; max-width: 370px; }
-.search-wrap::before {
-  content: "";
+.search-wrap { position: relative; flex: 1; max-width: 370px; font-size: 16px; }
+.search-icon {
   position: absolute;
   top: 50%;
   left: 14px;
-  width: 14px;
-  height: 14px;
-  border: 1.8px solid var(--muted);
-  border-radius: 50%;
-  transform: translateY(-58%);
-  pointer-events: none;
-}
-.search-wrap::after {
-  content: "";
-  position: absolute;
-  top: 25px;
-  left: 26px;
-  width: 6px;
-  height: 1.8px;
-  background: var(--muted);
-  transform: rotate(45deg);
+  color: var(--muted);
+  transform: translateY(-50%);
   pointer-events: none;
 }
 .toolbar input[type="search"] {
@@ -319,7 +307,9 @@ main { width: min(1184px, 100%); min-height: calc(100vh - 132px); margin: 0 auto
 .status-badge.partial { background: var(--warning-soft); color: var(--medium); }
 .status-badge.sparse { background: var(--danger-soft); color: var(--high); }
 
-.back-link { display: inline-flex; margin-bottom: 16px; color: var(--accent); text-decoration: none; font-size: 13px; font-weight: 600; }
+.back-link { display: inline-flex; gap: 6px; align-items: center; margin-bottom: 16px; color: var(--accent); text-decoration: none; font-size: 13px; font-weight: 600; }
+.back-link:hover svg { transform: translateX(-2px); }
+.back-link svg { transition: transform .2s; }
 .back-link:hover { color: var(--accent-hover); }
 
 .section {

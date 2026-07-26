@@ -29,6 +29,34 @@ function h(tag, attrs = {}, children = []) {
   return el;
 }
 
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const ICON_PATHS = {
+  'table-cells': 'M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 0 1-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-3.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-1.5A1.125 1.125 0 0 1 18 18.375M20.625 4.5H3.375m17.25 0c.621 0 1.125.504 1.125 1.125M20.625 4.5h-1.5C18.504 4.5 18 5.004 18 5.625m3.75-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125M3.375 4.5c-.621 0-1.125.504-1.125 1.125M3.375 4.5h1.5C5.496 4.5 6 5.004 6 5.625m-3.75 0v1.5c0 .621.504 1.125 1.125 1.125m0 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M19.125 12h1.5m0 0c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h1.5m14.25 0h1.5',
+  'pencil-square': 'm16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10',
+  'arrow-right': 'M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3',
+  'arrow-left': 'M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18',
+  'magnifying-glass': 'm21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z',
+  'check': 'm4.5 12.75 6 6 9-13.5',
+};
+
+function icon(name, attrs = {}) {
+  const el = document.createElementNS(SVG_NS, 'svg');
+  el.setAttribute('viewBox', '0 0 24 24');
+  el.setAttribute('fill', 'none');
+  el.setAttribute('stroke', 'currentColor');
+  el.setAttribute('stroke-width', '1.5');
+  el.setAttribute('stroke-linecap', 'round');
+  el.setAttribute('stroke-linejoin', 'round');
+  el.setAttribute('aria-hidden', 'true');
+  for (const [k, v] of Object.entries(attrs)) {
+    el.setAttribute(k === 'class' ? 'class' : k, v);
+  }
+  const path = document.createElementNS(SVG_NS, 'path');
+  path.setAttribute('d', ICON_PATHS[name]);
+  el.append(path);
+  return el;
+}
+
 async function api(path, opts = {}) {
   const res = await fetch(path, {
     headers: opts.body ? { 'content-type': 'application/json' } : undefined,
@@ -93,7 +121,7 @@ const ENTRIES = [
   {
     id: 'database',
     href: '#/users',
-    icon: '▦',
+    icon: 'table-cells',
     eyebrow: '已有档案',
     title: '数据库档案筛查',
     description: '从演示库的匿名用户档案中挑一位，先查看完整健康画像，再生成风险结果。',
@@ -103,7 +131,7 @@ const ENTRIES = [
   {
     id: 'questionnaire',
     href: '#/questionnaire',
-    icon: '✎',
+    icon: 'pencil-square',
     eyebrow: '匿名录入',
     title: '匿名问卷筛查',
     description: '现场填写一份健康问卷，提交后即时返回糖尿病与高血压风险评估，数据不入库。',
@@ -112,18 +140,18 @@ const ENTRIES = [
   },
 ];
 
-function backLink(href = '#/', text = '← 返回入口') {
-  return h('div', {}, h('a', { class: 'back-link', href }, text));
+function backLink(href = '#/', text = '返回入口') {
+  return h('div', {}, h('a', { class: 'back-link', href }, [icon('arrow-left'), text]));
 }
 
 function homeRoute() {
   const cards = ENTRIES.map((item) => h('a', { class: 'entry-card', href: item.href }, [
-    h('span', { class: 'entry-icon', 'aria-hidden': 'true' }, item.icon),
+    h('span', { class: 'entry-icon', 'aria-hidden': 'true' }, icon(item.icon)),
     h('small', { class: 'entry-eyebrow' }, item.eyebrow),
     h('h2', {}, item.title),
     h('p', { class: 'entry-desc' }, item.description),
     h('ul', { class: 'entry-points' }, item.points.map((p) => h('li', {}, p))),
-    h('span', { class: 'entry-cta' }, [item.cta, h('span', { 'aria-hidden': 'true' }, '→')]),
+    h('span', { class: 'entry-cta' }, [item.cta, icon('arrow-right')]),
   ]));
 
   render(h('div', { class: 'home' }, [
@@ -161,7 +189,7 @@ function usersRoute() {
   ]);
 
   const toolbar = h('div', { class: 'toolbar' }, [
-    h('div', { class: 'search-wrap' }, searchInput),
+    h('div', { class: 'search-wrap' }, [icon('magnifying-glass', { class: 'search-icon' }), searchInput]),
     countEl,
   ]);
   const container = h('div', {}, [
@@ -347,7 +375,7 @@ function renderResult(result) {
 
 async function userDetailRoute(userId) {
   const container = h('div', {}, [
-    h('div', {}, h('a', { class: 'back-link', href: '#/users' }, '← 返回列表')),
+    h('div', {}, h('a', { class: 'back-link', href: '#/users' }, [icon('arrow-left'), '返回列表'])),
     h('div', { class: 'page-heading' }, [
       h('h1', {}, `用户 ${userId}`),
       h('p', { class: 'subtitle' }, '查看健康画像并选择评估模式生成风险筛查结果。'),
