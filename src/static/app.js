@@ -6,11 +6,6 @@ const DATA_STATUS_LABEL = { complete: '基本完整', partial: '部分缺失', s
 const GENDER_LABEL = { male: '男性', female: '女性', other: '其他' };
 const SMOKING_LABEL = { never: '从未吸烟', former: '既往吸烟', current: '当前吸烟' };
 const DISEASE_LABEL = { diabetes: '糖尿病', hypertension: '高血压' };
-const MODE_LABEL = {
-  lifestyle_screening: '生活方式筛查',
-  comprehensive_profile: '综合健康画像',
-};
-const MODE_ORDER = ['lifestyle_screening', 'comprehensive_profile'];
 
 const EVIDENCE_FIELD_LABEL = {
   'basicInfo.bmi': 'BMI',
@@ -344,35 +339,10 @@ function renderDiseaseCard(d) {
 function renderResult(result) {
   return h('section', { class: 'section' }, [
     h('h2', {}, '风险预测结果'),
-    result.modeFallback
-      ? h('div', { class: 'mode-fallback-note' },
-          `已回退到「${MODE_LABEL.lifestyle_screening}」：该用户在所选模式下没有可用结果。`)
-      : null,
     result.overallSummary ? h('p', { class: 'overall-summary' }, result.overallSummary) : null,
     h('div', { class: 'result-grid' }, result.diseases.map(renderDiseaseCard)),
     result.boundaryNote ? h('p', { class: 'boundary-note' }, result.boundaryNote) : null,
   ]);
-}
-
-function renderModeSwitcher(currentMode, onChange) {
-  const group = h('div', { class: 'mode-switcher', role: 'radiogroup', 'aria-label': '评估模式' });
-  for (const m of MODE_ORDER) {
-    const btn = h(
-      'button',
-      {
-        type: 'button',
-        role: 'radio',
-        'aria-checked': String(m === currentMode),
-        class: `mode-option${m === currentMode ? ' active' : ''}`,
-      },
-      MODE_LABEL[m],
-    );
-    btn.addEventListener('click', () => {
-      if (m !== currentMode) onChange(m);
-    });
-    group.append(btn);
-  }
-  return group;
 }
 
 async function userDetailRoute(userId) {
