@@ -1,4 +1,4 @@
-import { newPredictionId } from '../results/adapter.js';
+import { newPredictionId } from './ids.js';
 
 const FALLBACK_ENGINE_ID = 'demo_fallback_rule_v1';
 const SCHEMA_VERSION = '1.0';

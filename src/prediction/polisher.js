@@ -1,4 +1,4 @@
-import { newPredictionId } from '../results/adapter.js';
+import { newPredictionId } from './ids.js';
 
 const DEMO_BOUNDARY = '结果来自演示模型，不是患病概率、未来发病预测或临床诊断。';
 
