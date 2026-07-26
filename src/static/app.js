@@ -215,7 +215,19 @@ function usersRoute() {
       return;
     }
     for (const u of state.users) {
-      const row = h('tr', { onclick: () => (location.hash = `#/users/${u.userId}`) }, [
+      const goToDetail = () => { location.hash = `#/users/${u.userId}`; };
+      const row = h('tr', {
+        tabindex: '0',
+        role: 'link',
+        'aria-label': `查看 ${u.userId} 的详情`,
+        onclick: goToDetail,
+        onkeydown: (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            goToDetail();
+          }
+        },
+      }, [
         h('td', { 'data-label': '用户 ID' }, u.userId),
         h('td', { 'data-label': '年龄' }, fmt(u.ageYears)),
         h('td', { 'data-label': '性别' }, GENDER_LABEL[u.gender] ?? '—'),
